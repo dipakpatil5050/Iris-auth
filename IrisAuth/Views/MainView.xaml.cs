@@ -24,7 +24,7 @@ namespace IrisAuth.Views
 
         private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
         {
-
+    
         }
 
         private void RadioButton_Checked_2()
@@ -33,7 +33,6 @@ namespace IrisAuth.Views
         }
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-
 
         private void pnlControlBar_MouseLeftButtonDown(Object sender, MouseButtonEventArgs e)
         {
