@@ -1,12 +1,191 @@
 ﻿<UserControl x:Class="IrisAuth.Views.UserManagementView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:IrisAuth.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d"
+             d:DesignWidth="1100" d:DesignHeight="720"
+             Background="#F3F6FB">
+
+    <UserControl.Resources>
+        <!-- Palette -->
+        <SolidColorBrush x:Key="Accent" Color="#6B3BFF"/>
+        <SolidColorBrush x:Key="HeaderBg" Color="#F8FAFF"/>
+        <SolidColorBrush x:Key="GridBorder" Color="#E7E7F0"/>
+        <SolidColorBrush x:Key="MutedText" Color="#7A8595"/>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="6,0"/>
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="18" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GhostButton" TargetType="Button" BasedOn="{StaticResource RoundedButton}">
+            <Setter Property="Background" Value="#28C2A6"/>
+        </Style>
+
+        <!-- DataGrid row hover/selection -->
+        <Style TargetType="DataGridRow" x:Key="DataGridRowStyle">
+            <Setter Property="Margin" Value="0,6"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridRow">
+                        <Border x:Name="RowBorder" Background="{TemplateBinding Background}" CornerRadius="6" Padding="0">
+                            <DataGridCellsPresenter/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="RowBorder" Property="Background" Value="#FFF7F0FF"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="RowBorder" Property="Background" Value="#F3E9FF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataGrid header style -->
+        <Style TargetType="DataGridColumnHeader" x:Key="DGHeaderStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#3A4A63"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0,0,0,0"/>
+            <Setter Property="Padding" Value="8,12"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header row: Sort + Search + Buttons -->
+        <Border Grid.Row="0" Background="{StaticResource HeaderBg}" CornerRadius="8" Padding="14" BorderBrush="{StaticResource GridBorder}" BorderThickness="1">
+            <DockPanel LastChildFill="False" VerticalAlignment="Center">
+                <!-- Left: Sort -->
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,18,0">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Sort by:" FontSize="12" Foreground="{StaticResource MutedText}" Margin="0,0,6,2"/>
+                        <!-- Safe ItemsSource via x:Array -->
+                        <ComboBox Width="150" Height="28" VerticalAlignment="Center" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged_1">
+                            <ComboBox.ItemsSource>
+                                <x:Array Type="{x:Type sys:String}">
+                                    <sys:String>Username</sys:String>
+                                    <sys:String>Full name</sys:String>
+                                    <sys:String>ID</sys:String>
+                                </x:Array>
+                            </ComboBox.ItemsSource>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Middle: Search -->
+                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,18,0">
+                    <StackPanel>
+                        <TextBlock Text="Search by ID, username, email, or name:" FontSize="12" Foreground="{StaticResource MutedText}" Margin="0,0,6,2"/>
+                        <DockPanel>
+                            <TextBox Width="560" Height="30" VerticalAlignment="Center" Padding="8,4" />
+                            <Button Style="{StaticResource RoundedButton}" Width="110" Height="32" Content="🔍  Search" DockPanel.Dock="Right" />
+                        </DockPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Right: Add new -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource GhostButton}" Width="120" Height="34" Content="+ Add new"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Spacer -->
+        <Border Grid.Row="1" Height="1" Background="Transparent"/>
+
+        <!-- Table area -->
+        <Border Grid.Row="2" Background="White" CornerRadius="8" Padding="10" BorderBrush="{StaticResource GridBorder}" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Column headings bar (thin purple line under header like screenshot) -->
+                <Border Grid.Row="0" BorderBrush="{StaticResource Accent}" BorderThickness="0,0,0,2" Margin="0,0,0,10" />
+
+                <!-- DataGrid placeholder (design-only columns) -->
+                <DataGrid Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          HeadersVisibility="Column"
+                          CanUserAddRows="False"
+                          RowStyle="{StaticResource DataGridRowStyle}"
+                          ColumnHeaderStyle="{StaticResource DGHeaderStyle}"
+                          GridLinesVisibility="None"
+                          RowHeaderWidth="0"
+                          SelectionMode="Single"
+                          IsReadOnly="True">
+
+                    <!-- Avatar + ID -->
+                    <DataGridTemplateColumn Header="ID" Width="110">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6">
+                                    <Border Width="44" Height="44" CornerRadius="22" ClipToBounds="True" VerticalAlignment="Center">
+                                        <!-- Placeholder image; when you bind later keep AvatarUri -->
+                                        <Image Source="https://i.pravatar.cc/48" Stretch="UniformToFill"/>
+                                    </Border>
+                                    <TextBlock Text="10101" Foreground="{StaticResource MutedText}" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!-- Username -->
+                    <DataGridTextColumn Header="Username" Binding="{Binding Username}" Width="150"/>
+
+                    <!-- Full name -->
+                    <DataGridTextColumn Header="Full name" Binding="{Binding FullName}" Width="2*"/>
+
+                    <!-- Email -->
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2.5*"/>
+
+                    <!-- Roles -->
+                    <DataGridTextColumn Header="Roles" Binding="{Binding Roles}" Width="2*"/>
+
+                    <!-- Actions -->
+                    <DataGridTemplateColumn Header="" Width="140">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,6,0" >
+                                    <Button Width="36" Height="30" Margin="6,0" ToolTip="View">📘</Button>
+                                    <Button Width="36" Height="30" Margin="6,0" ToolTip="Edit">✏️</Button>
+                                    <Button Width="36" Height="30" Margin="6,0" ToolTip="Delete">🗑️</Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid>
+
+                <!-- Footer / pagination area (design placeholder) -->
+                <Border Grid.Row="2" Visibility="Collapsed"/>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
