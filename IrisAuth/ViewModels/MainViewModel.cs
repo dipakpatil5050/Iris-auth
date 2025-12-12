@@ -65,7 +65,8 @@ namespace IrisAuth.ViewModels
 
         //--> Commands
         public ICommand ShowHomeViewCommand { get; }
-        public ICommand ShowCustomerViewCommand { get; }
+        public ICommand ShowUserManagementViewCommand { get; }
+        public ICommand ShowUserLogsViewCommand { get; }
 
         public MainViewModel()
         {
@@ -74,14 +75,22 @@ namespace IrisAuth.ViewModels
 
             //Initialize commands
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            ShowCustomerViewCommand = new ViewModelCommand(ExecuteShowCustomerViewCommand);
+            ShowUserManagementViewCommand = new ViewModelCommand(ExecuteShowUserManagementViewCommand);
+            ShowUserLogsViewCommand = new ViewModelCommand(ExecuteShowUserLogsViewCommand);
             //Default view
             ExecuteShowHomeViewCommand(null);
 
             LoadCurrentUserData();
         }
 
-        private void ExecuteShowCustomerViewCommand(object obj)
+        private void ExecuteShowUserLogsViewCommand(object obj)
+        {
+            CurrentChildView = new UserLogsViewModel();
+            Caption = "User logs";
+            Icon = IconChar.User;
+        }
+
+        private void ExecuteShowUserManagementViewCommand(object obj)
         {
             CurrentChildView = new UserManagementViewModel();
             Caption = "User Management";

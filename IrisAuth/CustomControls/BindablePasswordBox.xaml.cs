@@ -33,6 +33,7 @@ namespace IrisAuth.CustomControls
         public BindablePasswordBox()
         {
             //object value = InitializeComponent();
+            InitializeComponent();
             txtPassword.PasswordChanged += OnPasswordChanged;
 
         }

@@ -92,10 +92,19 @@
 
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}" Checked="RadioButton_Checked_3">
+                                 Command="{Binding ShowUserManagementViewCommand}" Checked="RadioButton_Checked_3">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="Customers" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="User Management" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+
+                    <RadioButton    Style="{StaticResource menuButton}"
+                                    Tag="{StaticResource color3}"
+                                    Command="{Binding ShowUserLogsViewCommand}" Checked="RadioButton_Checked_3">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="User Logs" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
 
