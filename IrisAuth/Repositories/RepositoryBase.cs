@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
 using System.Data.SqlClient;
 
 namespace IrisAuth.Repositories
 {
     public abstract class RepositoryBase
     {
-        private readonly string _connectionString;
-        public RepositoryBase()
+        protected readonly string _connectionString;
+
+        protected RepositoryBase()
         {
-            _connectionString = "Server=(local); Database=MVVMLoginDb; Integrated Security=true";
+            _connectionString = ConfigurationManager
+                .ConnectionStrings["MVVMLoginDb"]
+                .ConnectionString;
         }
+
         protected SqlConnection GetConnection()
         {
             return new SqlConnection(_connectionString);

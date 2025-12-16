@@ -15,7 +15,7 @@ namespace IrisAuth.ViewModels
     public class MainViewModel : ViewModelBase
     {
         //Fields
-        private UserAccountModel _currentUserAccount;
+        private UserModel _currentUserAccount;
         private ViewModelBase _currentChildView;
         private string _caption;
         private IconChar _icon;
@@ -24,7 +24,7 @@ namespace IrisAuth.ViewModels
         private IUserRepository userRepository;
 
         // Properties
-        public UserAccountModel CurrentUserAccount
+        public UserModel CurrentUserAccount
         {
             get
             {
@@ -67,16 +67,18 @@ namespace IrisAuth.ViewModels
         public ICommand ShowHomeViewCommand { get; }
         public ICommand ShowUserManagementViewCommand { get; }
         public ICommand ShowUserLogsViewCommand { get; }
+        public ICommand ShowUserGroupsViewCommand { get; }
 
         public MainViewModel()
         {
             userRepository = new UserRepository();
-            CurrentUserAccount = new UserAccountModel();
+            CurrentUserAccount = new UserModel();
 
             //Initialize commands
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowUserManagementViewCommand = new ViewModelCommand(ExecuteShowUserManagementViewCommand);
             ShowUserLogsViewCommand = new ViewModelCommand(ExecuteShowUserLogsViewCommand);
+            ShowUserGroupsViewCommand = new ViewModelCommand(ExecuteShowUserGroupsViewCommand);
             //Default view
             ExecuteShowHomeViewCommand(null);
 
@@ -87,6 +89,12 @@ namespace IrisAuth.ViewModels
         {
             CurrentChildView = new UserLogsViewModel();
             Caption = "User logs";
+            Icon = IconChar.User;
+        }
+        private void ExecuteShowUserGroupsViewCommand(object obj)
+        {
+            CurrentChildView = new GroupManagementViewModel();
+            Caption = "User Groups";
             Icon = IconChar.User;
         }
 
@@ -110,12 +118,12 @@ namespace IrisAuth.ViewModels
             if (user != null)
             {
                 CurrentUserAccount.Username = user.Username;
-                CurrentUserAccount.DisplayName = $"{user.Name} {user.LastName}";
-                CurrentUserAccount.ProfilePicture = null;               
+                //CurrentUserAccount.DisplayName = $"{user.Name} {user.LastName}";
+               // CurrentUserAccount.ProfilePicture = null;               
             }
             else
             {
-                CurrentUserAccount.DisplayName="Invalid user, not logged in";
+               // CurrentUserAccount.DisplayName="Invalid user, not logged in";
                 //Hide child views.
             }
         }
