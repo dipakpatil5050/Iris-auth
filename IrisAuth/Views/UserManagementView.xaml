@@ -104,7 +104,7 @@
         <!-- ===================== -->
         <!-- HEADER -->
         <!-- ===================== -->
-        <Border Grid.Row="0"
+        <!--<Border Grid.Row="0"
                 Background="{StaticResource HeaderBg}"
                 CornerRadius="8"
                 Padding="14"
@@ -113,7 +113,7 @@
 
             <DockPanel LastChildFill="False">
 
-                <!-- LEFT -->
+                --><!-- LEFT --><!--
                 <StackPanel DockPanel.Dock="Left"
                             Orientation="Horizontal"
                             Margin="0,0,18,0">
@@ -132,7 +132,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- CENTER -->
+                --><!-- CENTER --><!--
                 <StackPanel DockPanel.Dock="Left"
                             Orientation="Horizontal"
                             Margin="0,0,18,0">
@@ -149,7 +149,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <!-- RIGHT -->
+                --><!-- RIGHT --><!--
                 <StackPanel DockPanel.Dock="Right">
                     <Button Content="+ Add new"
                             Width="120"
@@ -159,7 +159,64 @@
                 </StackPanel>
 
             </DockPanel>
+        </Border>-->
+        <Border Grid.Row="0"
+        Background="{StaticResource HeaderBg}"
+        CornerRadius="8"
+        Padding="14"
+        BorderBrush="{StaticResource GridBorder}"
+        BorderThickness="1">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- LEFT : SORT -->
+                <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                    <TextBlock Text="Sort by:"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedText}"/>
+                    <ComboBox Width="160" Height="30"/>
+                </StackPanel>
+
+                <!-- CENTER : SEARCH -->
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="Search:"
+                       FontSize="12"
+                       Foreground="{StaticResource MutedText}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0"
+                         Height="32"
+                         Padding="10,4"/>
+
+                        <Button Grid.Column="1"
+                        Content="🔍 Search"
+                        Margin="8,0,0,0"
+                        Style="{StaticResource RoundedButton}"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- RIGHT : ADD NEW -->
+                <Button Grid.Column="2"
+                Content="+ Add New"
+                Height="36"
+                MinWidth="120"
+                Padding="16,6"
+                Margin="20,18,0,0"
+                HorizontalAlignment="Right"
+                Style="{StaticResource GhostButton}"
+                Command="{Binding AddUserCommand}"/>
+            </Grid>
         </Border>
+
 
         <!-- ===================== -->
         <!-- TABLE -->
@@ -171,7 +228,7 @@
                 BorderBrush="{StaticResource GridBorder}"
                 BorderThickness="1">
 
-            <DataGrid ItemsSource="{Binding Users}"
+            <!--<DataGrid ItemsSource="{Binding Users}"
                       SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
                       AutoGenerateColumns="False"
                       CanUserAddRows="False"
@@ -179,49 +236,56 @@
                       RowStyle="{StaticResource DataGridRowStyle}"
                       ColumnHeaderStyle="{StaticResource DGHeaderStyle}"
                       GridLinesVisibility="None"
-                      RowHeaderWidth="0">
+                      RowHeaderWidth="0">-->
+            <DataGrid ItemsSource="{Binding Users}"
+          SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+          Style="{DynamicResource DataGridStyle1}"
+          RowStyle="{DynamicResource DataGridRowStyle1}"
+          CellStyle="{DynamicResource DataGridCellStyle1}"
+          ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}">
 
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="ID"
-                                        Binding="{Binding UserId}"
-                                        Width="80"/>
+                            Binding="{Binding UserId}"
+                            Width="80"/>
 
                     <DataGridTextColumn Header="Username"
-                                        Binding="{Binding Username}"
-                                        Width="160"/>
+                            Binding="{Binding Username}"
+                            Width="160"/>
 
                     <DataGridTextColumn Header="Group"
-                                        Binding="{Binding GroupName}"
-                                        Width="120"/>
+                            Binding="{Binding GroupName}"
+                            Width="120"/>
 
                     <DataGridCheckBoxColumn Header="Biometric"
-                                            Binding="{Binding IsBiometricEnabled}"
-                                            Width="120"/>
+                                Binding="{Binding IsBiometricEnabled}"
+                                ElementStyle="{StaticResource CheckBoxStyle1}"
+                                Width="120"/>
 
                     <DataGridCheckBoxColumn Header="Blocked"
-                                            Binding="{Binding IsBlocked}"
-                                            Width="120"/>
+                                Binding="{Binding IsBlocked}"
+                                ElementStyle="{StaticResource CheckBoxStyle1}"
+                                Width="120"/>
 
                     <DataGridTextColumn Header="Last Login"
-                                        Binding="{Binding LastLogin}"
-                                        Width="*"/>
+                            Binding="{Binding LastLogin}"
+                            Width="*"/>
 
                     <!-- ACTIONS -->
-                    <DataGridTemplateColumn Header="" Width="150">
+                    <DataGridTemplateColumn Header="Actions" Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Right">
+                                HorizontalAlignment="Right">
 
-                                    <!-- EDIT -->
                                     <Button Width="36"
-                                            Height="30"
-                                            Margin="4,0"
-                                            ToolTip="Edit"
-                                            Command="{Binding DataContext.EditCommand,
-                                                      RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}">
+                                Height="30"
+                                Margin="4"
+                                ToolTip="Edit"
+                                Command="{Binding DataContext.EditCommand,
+                                          RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                CommandParameter="{Binding}">
                                         ✏️
                                     </Button>
                                     <Button Width="36"
@@ -231,16 +295,15 @@
                                             Command="{Binding DataContext.EnrollBiometricCommand,
                                                               RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                             CommandParameter="{Binding}">
-                                            🧬
-                                     </Button>
-                                    <!-- BLOCK / UNBLOCK -->
+                                        🧬
+                                    </Button>
                                     <Button Width="36"
-                                            Height="30"
-                                            Margin="4,0"
-                                            ToolTip="Block / Unblock"
-                                            Command="{Binding DataContext.ToggleBlockCommand,
-                                                      RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}">
+                                Height="30"
+                                Margin="4"
+                                ToolTip="Block"
+                                Command="{Binding DataContext.ToggleBlockCommand,
+                                          RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                CommandParameter="{Binding}">
                                         🚫
                                     </Button>
 

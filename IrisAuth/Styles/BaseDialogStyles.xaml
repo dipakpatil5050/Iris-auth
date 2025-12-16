@@ -1,0 +1,75 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- BASE WINDOW -->
+    <Style x:Key="BaseDialogWindowStyle"
+           TargetType="Window">
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <!-- CARD -->
+    <Style x:Key="DialogCardStyle"
+           TargetType="Border">
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Background" Value="WhiteSmoke"/>
+        <Setter Property="Padding" Value="20"/>
+    </Style>
+
+    <!-- PRIMARY BUTTON -->
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="MinWidth" Value="100"/>
+        <Setter Property="Background" Value="#6B3BFF"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <!-- SECONDARY BUTTON -->
+    <Style x:Key="SecondaryButton" TargetType="Button">
+        <Setter Property="Height" Value="34"/>
+        <Setter Property="MinWidth" Value="90"/>
+        <Setter Property="Background" Value="#F3F4F6"/>
+        <Setter Property="Foreground" Value="#374151"/>
+        <Setter Property="BorderBrush" Value="#D1D5DB"/>
+    </Style>
+
+    <!-- TOGGLE SWITCH -->
+    <Style x:Key="ToggleSwitchStyle"
+           TargetType="CheckBox">
+        <Setter Property="Width" Value="46"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Border x:Name="Track"
+                                Background="#E5E7EB"
+                                CornerRadius="11"/>
+                        <Ellipse x:Name="Thumb"
+                                 Width="18"
+                                 Height="18"
+                                 Fill="White"
+                                 Margin="2"
+                                 HorizontalAlignment="Left"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Track"
+                                    Property="Background"
+                                    Value="#6B3BFF"/>
+                            <Setter TargetName="Thumb"
+                                    Property="HorizontalAlignment"
+                                    Value="Right"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

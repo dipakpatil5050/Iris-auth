@@ -26,6 +26,11 @@
             <local:UserManagementView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type viewModel:GroupManagementViewModel}">
+            <local:GroupManagementView/>
+        </DataTemplate>
+
+
     </Window.Resources>
 
 
@@ -103,12 +108,12 @@
                                     Tag="{StaticResource color3}"
                                     Command="{Binding ShowUserGroupViewCommand}" Checked="RadioButton_Checked_3">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>
-                            <TextBlock Text="User Groups" Style="{StaticResource menuButtonText}"/>
+                            <fa:IconImage Icon="Database" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Group Master" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
                     <RadioButton    Style="{StaticResource menuButton}"
-                        Tag="{StaticResource color3}"
+                        Tag="{StaticResource color4}"
                         Command="{Binding ShowUserLogsViewCommand}" Checked="RadioButton_Checked_3">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="User" Style="{StaticResource menuButtonIcon}"/>
@@ -220,8 +225,8 @@
                                       Style="{StaticResource iconButtonIcon}" />
                             </Button>
 
-                            <TextBlock Text="{Binding CurrentUserAccount.DisplayName}"
-                               Foreground="{StaticResource titleColor3}"
+                            <TextBlock Text="{Binding CurrentUserAccount.Name}"
+                               Foreground="{StaticResource titleColor3}" 
                                FontFamily="Montserrat"
                                FontSize="12"
                                VerticalAlignment="Center" />

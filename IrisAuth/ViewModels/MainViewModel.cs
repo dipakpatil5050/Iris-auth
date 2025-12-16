@@ -67,7 +67,7 @@ namespace IrisAuth.ViewModels
         public ICommand ShowHomeViewCommand { get; }
         public ICommand ShowUserManagementViewCommand { get; }
         public ICommand ShowUserLogsViewCommand { get; }
-        public ICommand ShowUserGroupsViewCommand { get; }
+        public ICommand ShowUserGroupViewCommand { get; }
 
         public MainViewModel()
         {
@@ -78,7 +78,7 @@ namespace IrisAuth.ViewModels
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowUserManagementViewCommand = new ViewModelCommand(ExecuteShowUserManagementViewCommand);
             ShowUserLogsViewCommand = new ViewModelCommand(ExecuteShowUserLogsViewCommand);
-            ShowUserGroupsViewCommand = new ViewModelCommand(ExecuteShowUserGroupsViewCommand);
+            ShowUserGroupViewCommand = new ViewModelCommand(ExecuteShowUserGroupsViewCommand);
             //Default view
             ExecuteShowHomeViewCommand(null);
 
@@ -94,8 +94,8 @@ namespace IrisAuth.ViewModels
         private void ExecuteShowUserGroupsViewCommand(object obj)
         {
             CurrentChildView = new GroupManagementViewModel();
-            Caption = "User Groups";
-            Icon = IconChar.User;
+            Caption = "Group Master";
+            Icon = IconChar.Database;
         }
 
         private void ExecuteShowUserManagementViewCommand(object obj)

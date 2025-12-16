@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IrisAuth.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,12 @@ namespace IrisAuth.Views
         public BiometricEnrollDialog()
         {
             InitializeComponent();
+
+            Loaded += (_, __) =>
+            {
+                if (DataContext is BiometricEnrollViewModel vm)
+                    vm.CloseAction = Close;
+            };
         }
     }
 }
