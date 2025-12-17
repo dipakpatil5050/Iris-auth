@@ -96,16 +96,6 @@
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\PasswordHasher.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
-    <Compile Include="Models\GroupPermissionsModel.cs" />
-    <Compile Include="Models\IrisCaptureResult.cs" />
-    <Compile Include="Models\IUserRepository.cs" />
-    <Compile Include="Models\UserAccountModel.cs" />
-    <Compile Include="Models\UserModel.cs" />
-    <Compile Include="Repositories\GroupPermissionsRepository.cs" />
-    <Compile Include="Repositories\GroupRepository.cs" />
-    <Compile Include="Repositories\RepositoryBase.cs" />
-    <Compile Include="Repositories\UserAccountRepository.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Services\GroupProvisioningService.cs" />
     <Compile Include="Services\UserProvisioningService.cs" />
     <Compile Include="Services\WindowsAccountService.cs" />
@@ -165,7 +155,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Styles\DataGridColumnHeader.Aero.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\DataGridColumnHeader.Fallback.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\DataGridStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\newTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -254,6 +256,9 @@
     <PackageReference Include="MahApps.Metro.IconPacks">
       <Version>6.2.1</Version>
     </PackageReference>
+    <PackageReference Include="PresentationFramework.Aero2">
+      <Version>1.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\IrisDashboard.png" />
@@ -279,7 +284,18 @@
       <Project>{0dc667ee-caee-4f5b-8ae4-bf736b1ba574}</Project>
       <Name>IrisAuth.IrisSdk</Name>
     </ProjectReference>
+    <ProjectReference Include="..\IrisAuth.Models\IrisAuth.Models.csproj">
+      <Project>{a36ab03b-6f5a-4a69-85c1-ca7cd8602b0b}</Project>
+      <Name>IrisAuth.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IrisAuth.Repositories\IrisAuth.Repositories.csproj">
+      <Project>{2882f1e3-47af-40fe-8158-aa602f27db93}</Project>
+      <Name>IrisAuth.Repositories</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Repositories\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

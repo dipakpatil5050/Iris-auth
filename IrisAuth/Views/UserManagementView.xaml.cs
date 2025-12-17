@@ -16,7 +16,7 @@ namespace IrisAuth.Views
         public UserManagementView()
         {
             InitializeComponent();
-           // DataContext = new UserManagementViewModel(); // 🔑 REQUIRED
+/*            DataContext = new UserManagementViewModel();*/ // 🔑 REQUIRED
 
         }
 

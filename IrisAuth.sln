@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrisAuth", "IrisAuth\IrisAu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrisAuth.IrisSdk", "IrisAuth.IrisSdk\IrisAuth.IrisSdk.csproj", "{0DC667EE-CAEE-4F5B-8AE4-BF736B1BA574}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrisAuth.Models", "IrisAuth.Models\IrisAuth.Models.csproj", "{A36AB03B-6F5A-4A69-85C1-CA7CD8602B0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IrisAuth.Repositories", "IrisAuth.Repositories\IrisAuth.Repositories.csproj", "{2882F1E3-47AF-40FE-8158-AA602F27DB93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{0DC667EE-CAEE-4F5B-8AE4-BF736B1BA574}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DC667EE-CAEE-4F5B-8AE4-BF736B1BA574}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DC667EE-CAEE-4F5B-8AE4-BF736B1BA574}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A36AB03B-6F5A-4A69-85C1-CA7CD8602B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A36AB03B-6F5A-4A69-85C1-CA7CD8602B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A36AB03B-6F5A-4A69-85C1-CA7CD8602B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A36AB03B-6F5A-4A69-85C1-CA7CD8602B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2882F1E3-47AF-40FE-8158-AA602F27DB93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2882F1E3-47AF-40FE-8158-AA602F27DB93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2882F1E3-47AF-40FE-8158-AA602F27DB93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2882F1E3-47AF-40FE-8158-AA602F27DB93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

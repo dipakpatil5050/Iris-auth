@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:IrisAuth.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <!-- Background image fills the entire control while preserving aspect ratio -->
+    <!--<Grid>
+        --><!-- Background image fills the entire control while preserving aspect ratio --><!--
         <Image
             Source="/Images/IrisDashboard.png"
             Stretch="UniformToFill"
@@ -17,8 +17,17 @@
             UseLayoutRounding="True"
             AutomationProperties.Name="Dashboard background image" />
 
-        <!-- Optional dim overlay to improve contrast for the foreground card -->
+        --><!-- Optional dim overlay to improve contrast for the foreground card --><!--
         <Rectangle HorizontalAlignment="Stretch"
            VerticalAlignment="Stretch" />
+    </Grid>-->
+    
+    <Grid>
+        <TextBlock Text="Dashboard"
+             Foreground="Black"
+             FontSize="20"
+             FontWeight="SemiBold"
+             TextAlignment="Center"
+             DockPanel.Dock="Top"/>
     </Grid>
 </UserControl>

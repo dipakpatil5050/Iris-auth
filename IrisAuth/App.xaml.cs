@@ -27,6 +27,16 @@ namespace IrisAuth
                       loginView.Close();
                   }
               };
+            //Try to use Aero header if available
+            try
+            {
+                    Resources["DataGridColumnHeaderStyle1"] =
+                    Resources["DataGridColumnHeaderStyle_Aero"];
+            }
+            catch
+            {
+                // Aero not available → fallback already active
+            }
         }
     }
 }

@@ -17,6 +17,10 @@
         <Setter Property="CornerRadius" Value="14"/>
         <Setter Property="Background" Value="WhiteSmoke"/>
         <Setter Property="Padding" Value="20"/>
+
+        <!-- NEW -->
+        <Setter Property="BorderBrush" Value="#E5E7EB"/>
+        <Setter Property="BorderThickness" Value="2"/>
     </Style>
 
     <!-- PRIMARY BUTTON -->

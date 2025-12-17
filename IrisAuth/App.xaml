@@ -1,6 +1,7 @@
 ﻿<Application x:Class="IrisAuth.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:IrisAuth"
              Startup="ApplicationStart">
     <!--<Application.Resources>
@@ -14,6 +15,7 @@
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/DataGridStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/BaseDialogStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/newTable.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
