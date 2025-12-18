@@ -19,6 +19,31 @@ namespace IrisAuth.ViewModels
 
         public string GroupName { get; set; }
 
+        private int _loginType;
+        public int LoginType
+        {
+            get => _loginType;
+            set
+            {
+                _loginType = value;
+                OnPropertyChanged(nameof(LoginType));
+                OnPropertyChanged(nameof(IsLoginTimeoutEnabled));
+            }
+        }
+
+        private int _loginTimeout;
+        public int LoginTimeout
+        {
+            get => _loginTimeout;
+            set
+            {
+                _loginTimeout = value;
+                OnPropertyChanged(nameof(LoginTimeout));
+            }
+        }
+
+        public bool IsLoginTimeoutEnabled => LoginType != 1; // Off = disabled
+
         public bool Permission1 { get; set; }
         public bool Permission2 { get; set; }
         public bool Permission3 { get; set; }

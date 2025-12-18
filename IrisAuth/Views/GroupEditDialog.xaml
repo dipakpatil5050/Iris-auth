@@ -70,27 +70,33 @@
 
                 <TextBox Text="{Binding GroupName}"
                          Height="34"
-                         Padding="10"/>
+                         Padding="10"
+                         Margin="0,6,0,14"
+                         />
+                
+                    <!-- Auto Logout / LoginType-->
+                <TextBlock Text="Auto Logout"
+                      FontWeight="SemiBold"/>
 
-                <TextBlock Text="Permissions"
-                           FontWeight="SemiBold"
-                           Margin="0,14,0,8"/>
+                     <ComboBox Height="34"
+                          Margin="0,6,0,14"
+                          SelectedValuePath="Tag"
+                          SelectedValue="{Binding LoginType}">      
+                    <ComboBoxItem Content="Off" Tag="1"/>
+                    <ComboBoxItem Content="Absolute" Tag="2"/>
+                    <ComboBoxItem Content="InActive" Tag="3"/>
+                </ComboBox>
 
-                <UniformGrid Columns="2">
+                <!-- Login Timeout  -->
 
-                    <StackPanel Orientation="Horizontal" Margin="6">
-                        <TextBlock Text="👁 View" Width="90"/>
-                        <CheckBox Style="{StaticResource ToggleSwitchStyle}"
-                                  IsChecked="{Binding Permission1}"/>
-                    </StackPanel>
+                <TextBlock Text="Time"
+                    FontWeight="SemiBold"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="6">
-                        <TextBlock Text="✏ Edit" Width="90"/>
-                        <CheckBox Style="{StaticResource ToggleSwitchStyle}"
-                                  IsChecked="{Binding Permission2}"/>
-                    </StackPanel>
-
-                </UniformGrid>
+                <TextBox Text="{Binding LoginTimeout}"
+                          Height="34"
+                          Padding="10"
+                          IsEnabled="{Binding IsLoginTimeoutEnabled}"
+                         />            
 
                 <TextBlock Text="{Binding ErrorMessage}"
                            Foreground="#DC2626"

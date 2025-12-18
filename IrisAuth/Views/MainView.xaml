@@ -1,220 +1,4 @@
-﻿<!--<Window x:Class="IrisAuth.Views.MainView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-        xmlns:vm="clr-namespace:IrisAuth.ViewModels"
-        xmlns:views="clr-namespace:IrisAuth.Views"
-        Height="720"
-        Width="1080"
-        WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent">
-
-    <Window.DataContext>
-        <vm:MainViewModel/>
-    </Window.DataContext>
-
-    --><!-- VIEW ↔ VIEWMODEL MAPPING --><!--
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:HomeViewModel}">
-            <views:HomeView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vm:UserManagementViewModel}">
-            <views:UserManagementView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vm:GroupManagementViewModel}">
-            <views:GroupManagementView/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type vm:UserLogsViewModel}">
-            <views:UserLogsView/>
-        </DataTemplate>
-    </Window.Resources>
-
-    <Border CornerRadius="20"
-            Background="#EFF2F7">
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            
-
-            --><!-- ================= LEFT MENU ================= --><!--
-            <Border Background="#623ED0"
-                    CornerRadius="0,20,20,0">
-
-                <StackPanel Margin="10">
-
-                    <TextBlock Text="Velox"
-                               Foreground="White"
-                               FontSize="22"
-                               FontWeight="Bold"
-                               Margin="10"/>
-
-                    <Separator Background="#7E5FDC" Margin="10"/>
-
-                    <Button Style="{StaticResource menuButton}"
-                            Command="{Binding ShowHomeViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="Home"/>
-                            <TextBlock Text="Dashboard" Margin="10,0"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Style="{StaticResource menuButton}"
-                            Command="{Binding ShowUserManagementViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="AccountMultiple"/>
-                            <TextBlock Text="User Management" Margin="10,0"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Style="{StaticResource menuButton}"
-                            Command="{Binding ShowUserGroupViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="Database"/>
-                            <TextBlock Text="Group Master" Margin="10,0"/>
-                        </StackPanel>
-                    </Button>
-
-                    <Button Style="{StaticResource menuButton}"
-                            Command="{Binding ShowUserLogsViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <Icon:PackIconMaterial Kind="FileDocument"/>
-                            <TextBlock Text="User Logs" Margin="10,0"/>
-                        </StackPanel>
-                    </Button>
-
-                </StackPanel>
-            </Border>-->
-            <!--Left Menu--><!--
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                --><!--Menu Icon--><!--
-                <Button Style="{StaticResource topButton}" HorizontalAlignment="Left" Margin="20 28 0 35">
-                    <Icon:PackIconMaterial Kind="Menu" Width="15" Height="15" />
-                </Button>
-
-                <Border Grid.Row="1" Background="#623ED0" CornerRadius="0 50 0 30">
-                    <DockPanel>
-                        --><!--Menu Logo--><!--
-                        <Border Width="80" Height="80" Padding="3" Background="White" CornerRadius="100" DockPanel.Dock="Top" HorizontalAlignment="Left" Margin="20 -30 0 0">
-                            <Ellipse>
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="/Images/p1.jpg"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </Border>
-
-                        --><!--Menu Titles--><!--
-                        <TextBlock Text="Silvers Club" Foreground="White" FontSize="22" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="5 25 0 10" TextAlignment="Center"/>
-                        <TextBlock Text="Members, France" Foreground="#D0BFFF" FontSize="14" FontWeight="SemiBold" DockPanel.Dock="Top" TextAlignment="Center"/>
-
-                        --><!--Menu Seprator--><!--
-                        <Separator Margin="25" Background="#7E5FDC" DockPanel.Dock="Top" Height="0.8"/>
-
-                        --><!--Menu Buttons--><!--
-                        <StackPanel DockPanel.Dock="Top" >
-                            <Button Style="{StaticResource menuButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Icon:PackIconMaterial Kind="HomeVariant" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="Dashboard"/>
-                                </StackPanel>
-                            </Button>
-
-                            <Button Style="{StaticResource menuButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Icon:PackIconMaterial Kind="CalendarClock" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="Events"/>
-                                </StackPanel>
-                            </Button>
-
-                            <Button Style="{StaticResource menuButton}" Background="#7B5CD6" Foreground="White">
-                                <StackPanel Orientation="Horizontal">
-                                    <Icon:PackIconMaterial Kind="AccountMultipleOutline" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="User Management"/>
-                                </StackPanel>
-                            </Button>
-
-                            <Button Style="{StaticResource menuButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Icon:PackIconMaterial Kind="CashMultiple" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="Group Master"/>
-                                </StackPanel>
-                            </Button>
-
-                            <Button Style="{StaticResource menuButton}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Icon:PackIconMaterial Kind="ForumOutline" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="User Logs"/>
-                                </StackPanel>
-                            </Button>
-
-                        </StackPanel>
-
-                        <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20">
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="Logout" Style="{StaticResource menuButtonIcon}"/>
-                                <TextBlock Text="Logout"/>
-                            </StackPanel>
-                        </Button>
-
-                    </DockPanel>
-                </Border>
-
-            </Grid>
-            --><!-- ================= MAIN CONTENT ================= --><!--
-            <Grid Grid.Column="1">
-
-                --><!-- TOP BAR / Caption --><!--
-                <DockPanel Height="40"
-                           Background="#E6EBF3"
-                           LastChildFill="True">
-
-                    <TextBlock Text="{Binding Caption}"
-                               VerticalAlignment="Center"
-                               FontSize="16"
-                               FontWeight="SemiBold"
-                               Margin="10"/>
-
-                    <StackPanel Orientation="Horizontal"
-                                DockPanel.Dock="Right">
-
-                        <Button Width="40"
-                                Click="Minimize_Click"
-                                Content="—"/>
-
-                        <Button Width="40"
-                                Click="Maximize_Click"
-                                Content="□"/>
-
-                        <Button Width="40"
-                                Click="Close_Click"
-                                Background="#E81123"
-                                Foreground="White"
-                                Content="X"/>
-                    </StackPanel>
-                </DockPanel>
-
-                --><!-- CONTENT --><!--
-                <ContentControl Content="{Binding CurrentChildView}"
-                                Margin="10"/>
-            </Grid>
-
-        </Grid>
-    </Border>
-</Window>-->
-<Window x:Class="IrisAuth.Views.MainView"
+﻿<Window x:Class="IrisAuth.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
@@ -360,17 +144,7 @@
                         </StackPanel>
 
                         <!-- Logout -->
-                        <!--<Button Style="{StaticResource menuButton}"
-                                DockPanel.Dock="Bottom"
-                                Margin="15 0 15 20">
-                            <StackPanel Orientation="Horizontal">
-                                <Icon:PackIconMaterial Kind="Logout"
-                                                       Style="{StaticResource menuButtonIcon}"/>
-                                <TextBlock Text="Logout"/>
-                            </StackPanel>
-                        </Button>-->
-
-
+              
                         <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20">
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="Logout" Style="{StaticResource menuButtonIcon}"/>
@@ -389,41 +163,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- ===== TOP HEADER ===== --><!--
-                <DockPanel Grid.Row="0"
-           Background="#E6EBF3"
-           LastChildFill="True">
-
-                    --><!-- RIGHT: Window Controls --><!--
-                    <StackPanel Orientation="Horizontal"
-                DockPanel.Dock="Right">
-
-                        <Button Width="40"
-                Height="40"
-                Click="Minimize_Click"
-                Content="—"/>
-
-                        <Button Width="40"
-                Height="40"
-                Click="Maximize_Click"
-                Content="□"/>
-
-                        <Button Width="40"
-                Height="40"
-                Click="Close_Click"
-                Background="#E81123"
-                Foreground="White"
-                Content="X"/>
-                    </StackPanel>
-
-                    --><!-- LEFT: Caption --><!--
-                    <TextBlock Text="{Binding Caption}"
-               VerticalAlignment="Center"
-               FontSize="16"
-               FontWeight="SemiBold"
-               Margin="12"/>
-                </DockPanel>-->
-                <!-- ================= TOP HEADER ================= -->
+                <!-- ===== TOP HEADER ===== -->
                 <DockPanel Grid.Row="0"
                        Background="#E6EBF3"
                        LastChildFill="True"
@@ -455,21 +195,19 @@
 
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Width="18"
-                                        Height="18"
+                                    <Border Width="24"
+                                        Height="24"
                                         CornerRadius="9"
-                                        Background="{TemplateBinding Background}">
+                                        Background="LightGray">
                                         <ContentPresenter
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Button.Template>
-
-                            <fa:IconBlock Icon="WindowMinimize"
-                                      Foreground="White"
-                                      Width="8"
-                                      Height="8"/>
+                            <Icon:PackIconMaterial Kind="WindowMinimize" Foreground="BlueViolet"
+                           Style="{StaticResource gridButtonIcon}"/>
+                           
                         </Button>
 
                         <!-- MAXIMIZE -->
@@ -492,10 +230,10 @@
 
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Width="18"
-                                        Height="18"
+                                    <Border Width="24"
+                                        Height="24"
                                         CornerRadius="9"
-                                        Background="{TemplateBinding Background}">
+                                        Background="LightGray">
                                         <ContentPresenter
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"/>
@@ -503,10 +241,9 @@
                                 </ControlTemplate>
                             </Button.Template>
 
-                            <fa:IconBlock Icon="WindowMaximize"
-                                      Foreground="White"
-                                      Width="8"
-                                      Height="8"/>
+                            <Icon:PackIconMaterial Kind="WindowMaximize" Foreground="BlueViolet"
+                                     Style="{StaticResource gridButtonIcon}"/>
+
                         </Button>
 
                         <!-- CLOSE -->
@@ -529,10 +266,10 @@
 
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
-                                    <Border Width="18"
-                                        Height="18"
+                                    <Border Width="24"
+                                        Height="24"
                                         CornerRadius="9"
-                                        Background="{TemplateBinding Background}">
+                                        Background="LightGray">
                                         <ContentPresenter
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"/>
@@ -540,10 +277,8 @@
                                 </ControlTemplate>
                             </Button.Template>
 
-                            <fa:IconBlock Icon="Times"
-                                      Foreground="White"
-                                      Width="8"
-                                      Height="8"/>
+                            <Icon:PackIconMaterial Kind="Close" Foreground="OrangeRed"
+                           Style="{StaticResource gridButtonIcon}"/>
                         </Button>
 
                     </StackPanel>

@@ -3,146 +3,120 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:viewmodels="clr-namespace:IrisAuth.ViewModels"
+             xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
-          
+             d:DesignWidth="1100"
+             d:DesignHeight="720"
              Background="#F3F6FB">
 
-    <UserControl.Resources>
-        <SolidColorBrush x:Key="Accent" Color="#6B3BFF"/>
-        <SolidColorBrush x:Key="HeaderBg" Color="#F8FAFF"/>
-        <SolidColorBrush x:Key="GridBorder" Color="#E7E7F0"/>
-        <SolidColorBrush x:Key="MutedText" Color="#7A8595"/>
-
-        <Style x:Key="RoundedButton" TargetType="Button">
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="10,6"/>
-            <Setter Property="Margin" Value="6,0"/>
-            <Setter Property="Background" Value="{StaticResource Accent}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="18"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="GhostButton"
-               TargetType="Button"
-               BasedOn="{StaticResource RoundedButton}">
-            <Setter Property="Background" Value="#28C2A6"/>
-        </Style>
-    </UserControl.Resources>
-
-    <Grid Margin="18">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="12"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- HEADER -->
-        <Border Grid.Row="0"
-                Background="{StaticResource HeaderBg}"
-                CornerRadius="8"
-                Padding="14"
-                BorderBrush="{StaticResource GridBorder}"
-                BorderThickness="1">
+        <!-- ================= HEADER ================= -->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-            <DockPanel>
-                <TextBlock Text="Group Management"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           DockPanel.Dock="Left"/>
+            <TextBlock Text="Group Management"
+                       FontSize="28"
+                       FontWeight="SemiBold"
+                       Foreground="#121518"
+                       VerticalAlignment="Center"/>
 
-                <Button Content="+ Add Group"
-                        Width="140"
-                        Height="34"
-                        Style="{StaticResource GhostButton}"
-                        Command="{Binding AddGroupCommand}"
-                        DockPanel.Dock="Right"/>
-            </DockPanel>
-        </Border>
+            <Button Grid.Column="1"
+                    Style="{StaticResource addButton}"
+                    Content="+ Add Group"
+                    Command="{Binding AddGroupCommand}"/>
+        </Grid>
 
-        <!-- TABLE -->
-        <Border Grid.Row="2"
-                Background="White"
-                CornerRadius="8"
-                Padding="10"
-                BorderBrush="{StaticResource GridBorder}"
-                BorderThickness="1">
+        <!-- ================= SPACING ROW ================= -->
+        <Grid Grid.Row="1" Height="20"/>
 
-            <DataGrid ItemsSource="{Binding Groups}"
-                      SelectedItem="{Binding SelectedGroup}"
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      IsReadOnly="True"
-                      GridLinesVisibility="None"
-                      RowHeaderWidth="0">
+        <!-- ================= DATAGRID ================= -->
+        <DataGrid Grid.Row="2"
+                  ItemsSource="{Binding Groups}"
+                  SelectedItem="{Binding SelectedGroup}"
+                  Style="{DynamicResource DataGridStyle1}"
+                  RowStyle="{DynamicResource DataGridRowStyle1}"
+                  CellStyle="{DynamicResource DataGridCellStyle1}"
+                  ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}"
+                  HeadersVisibility="Column"
+                  AutoGenerateColumns="False"
+                  ColumnHeaderHeight="42"
+                  RowHeaderWidth="0">
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID"
-                                        Binding="{Binding GroupId}"
-                                        Width="80"/>
+            <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="Group Name"
-                                        Binding="{Binding GroupName}"
-                                        Width="200"/>
+                <!-- ID -->
+                <DataGridTextColumn Header="ID"
+                                    Binding="{Binding GroupId}"
+                                    Width="60"/>
 
-                    <DataGridCheckBoxColumn Header="P1"
-                                            Binding="{Binding Permission1}"
-                                            Width="80"/>
-                    <DataGridCheckBoxColumn Header="P2"
-                                            Binding="{Binding Permission2}"
-                                            Width="80"/>
-                    <DataGridCheckBoxColumn Header="P3"
-                                            Binding="{Binding Permission3}"
-                                            Width="80"/>
-                    <DataGridCheckBoxColumn Header="P4"
-                                            Binding="{Binding Permission4}"
-                                            Width="80"/>
-                    <DataGridCheckBoxColumn Header="P5"
-                                            Binding="{Binding Permission5}"
-                                            Width="80"/>
-                    <DataGridCheckBoxColumn Header="P6"
-                                            Binding="{Binding Permission6}"
-                                            Width="80"/>
+                <!-- GROUP NAME -->
+                <DataGridTemplateColumn Header="Group Name" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding GroupName}"
+                                       FontWeight="SemiBold"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="" Width="140">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Right">
 
-                                    <Button Content="✏️"
-                                            Width="36"
-                                            Height="30"
-                                            Command="{Binding DataContext.EditGroupCommand,
-                                                              RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}"/>
+                <DataGridTextColumn Header="Auto Logout"
+                                      Binding="{Binding LoginType}"
+                                      Width="120"/>
 
-                                    <Button Content="🗑️"
-                                            Width="36"
-                                            Height="30"
-                                            Command="{Binding DataContext.DeleteGroupCommand,
-                                                              RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                            CommandParameter="{Binding}"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
+                <DataGridTextColumn Header="Time"
+                                      Binding="{Binding LoginTimeout}"
+                                      Width="120"/>
+
+                <!-- ACTIONS -->
+                <DataGridTemplateColumn Header="Actions" Width="140">
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader"
+                               BasedOn="{StaticResource DataGridColumnHeaderStyle1}">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center">
+
+                                <Button Style="{StaticResource gridEditButton}"
+                                        Margin="0,0,8,0"
+                                        ToolTip="Edit"
+                                        Command="{Binding DataContext.EditGroupCommand,
+                                                  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}">
+                                    <Icon:PackIconMaterial Kind="PencilOutline"
+                                                           Style="{StaticResource gridButtonIcon}"/>
+                                </Button>
+
+                                <Button Style="{StaticResource gridEditButton}"
+                                        ToolTip="Delete"
+                                        Command="{Binding DataContext.DeleteGroupCommand,
+                                                  RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}">
+                                    <Icon:PackIconMaterial Kind="DeleteOutline"
+                                                           Style="{StaticResource gridButtonIcon}"/>
+                                </Button>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
 </UserControl>

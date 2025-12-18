@@ -107,6 +107,7 @@
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\PaginationButton.cs" />
     <Compile Include="ViewModels\UserEditDialogViewModel.cs" />
     <Compile Include="ViewModels\UserLogsViewModel.cs" />
     <Compile Include="ViewModels\UserManagementViewModel.cs" />
