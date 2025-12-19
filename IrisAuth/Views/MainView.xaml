@@ -34,6 +34,9 @@
         <DataTemplate DataType="{x:Type vm:UserLogsViewModel}">
             <views:UserLogsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AppSettingsViewModel}">
+            <views:AppSettingsView/>
+        </DataTemplate>
     </Window.Resources>
 
     <!-- ================= ROOT CARD ================= -->
@@ -139,6 +142,16 @@
                                                            Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="User Logs"/>
                                 </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}"
+                                            Visibility="{Binding ShowSettingsMenu,
+                                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                        Command="{Binding ShowSettingsViewCommand}">
+                                         <StackPanel Orientation="Horizontal">
+                                            <Icon:PackIconMaterial Kind="CogOutline"
+                                             Style="{StaticResource menuButtonIcon}"/>
+                                            <TextBlock Text="Application Settings"/>
+                                         </StackPanel>
                             </Button>
 
                         </StackPanel>

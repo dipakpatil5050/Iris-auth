@@ -1,0 +1,627 @@
+﻿<!--<UserControl x:Class="IrisAuth.Views.AppSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:IrisAuth.ViewModels"
+             Background="#F3F6FB">
+
+    --><!-- ================= VIEWMODEL ================= --><!--
+    <UserControl.DataContext>
+        <vm:AppSettingsViewModel/>
+    </UserControl.DataContext>
+
+    --><!-- ================= LOCAL STYLES ================= --><!--
+    <UserControl.Resources>
+
+        --><!-- Section title --><!--
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#121518"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+
+        --><!-- Form label --><!--
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#6C7682"/>
+            <Setter Property="Margin" Value="0,12,0,4"/>
+        </Style>
+
+        --><!-- TextBox --><!--
+        <Style x:Key="FormTextbox" TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="10,4"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DEE4EC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        --><!-- ComboBox --><!--
+        <Style x:Key="FormComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="8,2"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DEE4EC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        --><!-- Toggle Switch --><!--
+        <Style x:Key="ToggleSwitchStyle" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="SwitchBorder"
+                            Width="42"
+                            Height="22"
+                            CornerRadius="11"
+                            Background="#DEE4EC">
+                                <Ellipse x:Name="SwitchThumb"
+                                 Width="18"
+                                 Height="18"
+                                 Margin="2"
+                                 Fill="White"/>
+                            </Border>
+
+                            <ContentPresenter Margin="10,0,0,0"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SwitchBorder"
+                                Property="Background"
+                                Value="#6B3BFF"/>
+                                <Setter TargetName="SwitchThumb"
+                                Property="Margin"
+                                Value="22,2,2,2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        --><!-- Save button --><!--
+        <Style x:Key="SaveButton" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Width" Value="160"/>
+            <Setter Property="Background" Value="#6B3BFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    --><!-- ================= LAYOUT ================= --><!--
+    <Grid Margin="20">
+        <Border Background="White"
+                BorderBrush="#DEE4EC"
+                BorderThickness="1"
+                CornerRadius="10"
+                Padding="24">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                <StackPanel>
+
+                    --><!-- HEADER --><!--
+                    <TextBlock Text="Application Settings"
+                               Style="{StaticResource SectionTitle}"/>
+
+                    --><!-- ===== GENERAL ===== --><!--
+                    <CheckBox Content="Allow Local Biometric Upload"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.AllowLocalBiometricUpload}"/>
+
+                    <CheckBox Content="Enable Windows Group Creation"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.EnableGroupCreation}"/>
+
+                    <CheckBox Content="Enable Windows User Creation"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.EnableUserCreation}"/>
+
+                    --><!-- ===== PREFIXES ===== --><!--
+                    <TextBlock Text="Group Prefix" Style="{StaticResource FormLabel}"/>
+                    <TextBox Style="{StaticResource FormTextbox}"
+                             Text="{Binding Settings.GroupPrefix}"/>
+
+                    <TextBlock Text="User Prefix" Style="{StaticResource FormLabel}"/>
+                    <TextBox Style="{StaticResource FormTextbox}"
+                             Text="{Binding Settings.UserPrefix}"/>
+
+                    --><!-- ===== PASSWORD ===== --><!--
+                    <TextBlock Text="Default User Password"
+                               Style="{StaticResource FormLabel}"/>
+                    <TextBox Style="{StaticResource FormTextbox}"
+                             Text="{Binding Settings.DefaultUserPassword}"/>
+
+                    <CheckBox Content="Force Password Change on First Login"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.ForcePasswordChange}"/>
+
+                    <CheckBox Content="Auto Add User to Group"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.AutoAddUserToGroup}"/>
+
+                    --><!-- ===== MODE ===== --><!--
+                    <TextBlock Text="Security Mode"
+                               FontWeight="SemiBold"
+                               Margin="0,10,0,2"/>
+                    <ComboBox Width="200"
+                             Style="{StaticResource FormComboBox}"
+                             SelectedValue="{Binding Settings.Mode}"
+                             SelectedValuePath="Content">
+                             <ComboBoxItem Content="Local"/>
+                             <ComboBoxItem Content="Domain"/>
+                    </ComboBox>
+                    <TextBlock Text="Domain Name"
+                                Style="{StaticResource FormLabel}"
+                                 IsEnabled="{Binding Settings.IsDomainMode}"/>
+                    <TextBox Style="{StaticResource FormTextbox}"
+                             Width="300"
+                             Text="{Binding Settings.DomainName}"
+                             IsEnabled="{Binding Settings.IsDomainMode}"/>
+
+                    --><!-- SAVE --><!--
+                    <Button Content="Save Settings"
+                            Margin="0,25,0,0"
+                            Style="{StaticResource SaveButton}"
+                            Command="{Binding SaveCommand}"/>
+
+                </StackPanel>
+
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</UserControl>--><!--
+<UserControl x:Class="IrisAuth.Views.AppSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:IrisAuth.ViewModels"
+             Background="#F3F6FB">
+
+    <UserControl.DataContext>
+        <vm:AppSettingsViewModel/>
+    </UserControl.DataContext>
+
+    --><!-- ================= STYLES ================= --><!--
+    <UserControl.Resources>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BorderBrush" Value="#E3E8EF"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#1F2937"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
+        </Style>
+
+        <Style x:Key="Label" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#6B7280"/>
+            <Setter Property="Margin" Value="0,12,0,4"/>
+        </Style>
+
+        <Style x:Key="Textbox" TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+
+        <Style x:Key="Combo" TargetType="ComboBox"
+               BasedOn="{StaticResource FormComboBox}"/>
+
+        <Style x:Key="SaveButton" TargetType="Button">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Background" Value="#6B3BFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    --><!-- ================= CONTENT ================= --><!--
+    <ScrollViewer Padding="24">
+
+        <StackPanel Width="720">
+
+            --><!-- TITLE --><!--
+            <TextBlock Text="Application Settings"
+                       FontSize="26"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,24"/>
+
+            --><!-- ================= GENERAL ================= --><!--
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+
+                    <TextBlock Text="General"
+                               Style="{StaticResource SectionHeader}"/>
+
+                    <CheckBox Content="Allow Local Biometric Upload"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.AllowLocalBiometricUpload}"/>
+
+                    <CheckBox Content="Enable Windows Group Creation"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.EnableGroupCreation}"/>
+
+                    <CheckBox Content="Enable Windows User Creation"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.EnableUserCreation}"/>
+
+                </StackPanel>
+            </Border>
+
+            --><!-- ================= USER / GROUP ================= --><!--
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+
+                    <TextBlock Text="User & Group Defaults"
+                               Style="{StaticResource SectionHeader}"/>
+
+                    <TextBlock Text="Group Prefix" Style="{StaticResource Label}"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             Text="{Binding Settings.GroupPrefix}"/>
+
+                    <TextBlock Text="User Prefix" Style="{StaticResource Label}"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             Text="{Binding Settings.UserPrefix}"/>
+
+                    <TextBlock Text="Default User Password"
+                               Style="{StaticResource Label}"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             Text="{Binding Settings.DefaultUserPassword}"/>
+
+                    <CheckBox Content="Force Password Change on First Login"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.ForcePasswordChange}"/>
+
+                    <CheckBox Content="Auto Add User to Group"
+                              Style="{StaticResource ToggleSwitchStyle}"
+                              IsChecked="{Binding Settings.AutoAddUserToGroup}"/>
+
+                </StackPanel>
+            </Border>
+
+            --><!-- ================= SECURITY MODE ================= --><!--
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+
+                    <TextBlock Text="Security Mode"
+                               Style="{StaticResource SectionHeader}"/>
+
+                    <TextBlock Text="Authentication Mode"
+                               Style="{StaticResource Label}"/>
+
+                    <ComboBox Width="220"
+                              Style="{StaticResource FormComboBox}"
+                              SelectedValue="{Binding Settings.Mode}"
+                              SelectedValuePath="Content">
+                        <ComboBoxItem Content="Local"/>
+                        <ComboBoxItem Content="Domain"/>
+                    </ComboBox>
+
+                    <TextBlock Text="Domain Name"
+                               Style="{StaticResource Label}"
+                               IsEnabled="{Binding Settings.IsDomainMode}"/>
+
+                    <TextBox Width="320"
+                             Style="{StaticResource Textbox}"
+                             Text="{Binding Settings.DomainName}"
+                             IsEnabled="{Binding Settings.IsDomainMode}"
+                             Opacity="{Binding Settings.IsDomainMode,
+                                       Converter={StaticResource BooleanToOpacityConverter},
+                                       FallbackValue=0.5}"/>
+
+                </StackPanel>
+            </Border>
+
+            --><!-- SAVE --><!--
+            <StackPanel HorizontalAlignment="Right">
+                <Button Content="Save Settings"
+                        Style="{StaticResource SaveButton}"
+                        Command="{Binding SaveCommand}"/>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>-->
+<UserControl x:Class="IrisAuth.Views.AppSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:IrisAuth.ViewModels"
+             Background="#F3F6FB">
+
+    <UserControl.DataContext>
+        <vm:AppSettingsViewModel/>
+    </UserControl.DataContext>
+
+    <!-- ================= STYLES ================= -->
+    <UserControl.Resources>
+
+        <!-- Smooth Toggle Switch -->
+        <!--<Style x:Key="ToggleSwitch" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="Track"
+                                    Width="44" Height="22"
+                                    CornerRadius="11"
+                                    Background="#D1D5DB">
+                                <Ellipse x:Name="Thumb"
+                                         Width="18" Height="18"
+                                         Fill="White"
+                                         Margin="2"/>
+                            </Border>
+
+                            <ContentPresenter Margin="12,0,0,0"
+                                              VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetName="Thumb"
+                                                                 Storyboard.TargetProperty="Margin"
+                                                                 To="24,2,2,2"
+                                                                 Duration="0:0:0.2"/>
+                                            <ColorAnimation Storyboard.TargetName="Track"
+                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            To="#6B3BFF"
+                                                            Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>-->
+        <Style x:Key="ToggleSwitch" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="Track"
+                            Width="44" Height="22"
+                            CornerRadius="11"
+                            Background="#D1D5DB">
+                                <Ellipse x:Name="Thumb"
+                                 Width="18" Height="18"
+                                 Fill="White"
+                                 Margin="2"/>
+                            </Border>
+
+                            <ContentPresenter Margin="12,0,0,0"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ControlTemplate.Triggers>
+
+                            <!-- CHECKED -->
+                            <Trigger Property="IsChecked" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetName="Thumb"
+                                                         Storyboard.TargetProperty="Margin"
+                                                         To="24,2,2,2"
+                                                         Duration="0:0:0.2"/>
+                                            <ColorAnimation Storyboard.TargetName="Track"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="#6B3BFF"
+                                                    Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+
+                                <!-- UNCHECKED -->
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Storyboard.TargetName="Thumb"
+                                                         Storyboard.TargetProperty="Margin"
+                                                         To="2,2,2,2"
+                                                         Duration="0:0:0.2"/>
+                                            <ColorAnimation Storyboard.TargetName="Track"
+                                                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                    To="#D1D5DB"
+                                                    Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <!-- Card -->
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+
+        <!-- TextBox -->
+        <Style x:Key="Textbox" TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- Save Button -->
+        <Style x:Key="SaveButton" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Background" Value="#6B3BFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="0.4"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- ================= CONTENT ================= -->
+    <ScrollViewer Padding="24">
+        <StackPanel Width="720">
+
+            <TextBlock Text="Application Settings"
+                       FontSize="26"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,24"/>
+
+            <!-- GENERAL -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <CheckBox Content="Allow Local Biometric Upload"
+                              ToolTip="Store biometric data locally"
+                              Style="{StaticResource ToggleSwitch}"
+                              FontWeight="SemiBold"
+                              IsChecked="{Binding Settings.AllowLocalBiometricUpload}"/>
+
+                    <CheckBox Content="Enable Windows Group Creation"
+                              ToolTip="Create Windows groups automatically"
+                              Style="{StaticResource ToggleSwitch}"
+                              FontWeight="SemiBold"
+                              IsChecked="{Binding Settings.EnableGroupCreation}"/>
+
+                    <CheckBox Content="Enable Windows User Creation"
+                              ToolTip="Create Windows users automatically"
+                              Style="{StaticResource ToggleSwitch}"
+                              FontWeight="SemiBold"
+                              IsChecked="{Binding Settings.EnableUserCreation}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- USER DEFAULTS -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Group Prefix"
+                           FontWeight="SemiBold"/>                    
+                    <TextBox Style="{StaticResource Textbox}"
+                             ToolTip="Prefix for created Windows groups"
+                             Text="{Binding Settings.GroupPrefix}"/>
+                    <TextBlock Text="User Prefix"
+                           FontWeight="SemiBold"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             ToolTip="Prefix for created Windows users"
+                             Text="{Binding Settings.UserPrefix}"/>
+                    <TextBlock Text="Group Description"
+                           FontWeight="SemiBold"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             ToolTip="Group Description"
+                             Text="{Binding Settings.GroupDescription}"/>
+                    <TextBlock Text="User Description"
+                           FontWeight="SemiBold"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             ToolTip="User Description"
+                             Text="{Binding Settings.UserDescription}"/>
+                    <TextBlock Text="Default password for new users"
+                           FontWeight="SemiBold"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             ToolTip="Default password for new users"
+                             Text="{Binding Settings.DefaultUserPassword}"/>
+
+                    <CheckBox Content="Force password change on first login"
+                              Style="{StaticResource ToggleSwitch}"
+                              FontWeight="SemiBold"
+                              IsChecked="{Binding Settings.ForcePasswordChange}"/>
+
+                    <CheckBox Content="Auto add user to group"
+                              Style="{StaticResource ToggleSwitch}"
+                              FontWeight="SemiBold"
+                              IsChecked="{Binding Settings.AutoAddUserToGroup}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- MODE --><!--
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Mode"
+                           FontWeight="SemiBold"/>
+                    <ComboBox Width="220"
+                              SelectedValue="{Binding Settings.Mode}"
+                              SelectedValuePath="Content">
+                        <ComboBoxItem Content="Local"/>
+                        <ComboBoxItem Content="Domain"/>
+                    </ComboBox>
+                    <TextBlock Text="DOMAIN Name"
+                           FontWeight="SemiBold"/>
+                    <TextBox Style="{StaticResource Textbox}"
+                             ToolTip="Active Directory domain name"
+                             IsEnabled="{Binding Settings.IsDomainMode}"
+                             Opacity="{Binding Settings.IsDomainMode, FallbackValue=0.5}"
+                             Text="{Binding Settings.DomainName}"/>
+                </StackPanel>
+            </Border>-->
+            <!-- MODE -->
+            <Border Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Security Mode" FontWeight="SemiBold"/>
+
+                    <ComboBox Width="220"
+                              SelectedValue="{Binding Settings.Mode}"
+                              SelectedValuePath="Content">
+                        <ComboBoxItem Content="Local"/>
+                        <ComboBoxItem Content="Domain"/>
+                    </ComboBox>
+
+                    <!-- DOMAIN ONLY -->
+                    <StackPanel Margin="0,12,0,0"
+                                Visibility="{Binding Settings.IsDomainMode,
+                                             Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="Domain Name" FontWeight="SemiBold"/>
+                        <TextBox Style="{StaticResource Textbox}"
+                             ToolTip="Active Directory domain"
+                             Text="{Binding Settings.DomainName}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <!-- SAVE -->
+
+            <Button Content="Save Settings"
+                    Style="{StaticResource SaveButton}"
+                     BorderThickness="0"
+                     Foreground="White"
+                     FontSize="12"
+                     FontFamily="Montserrat"
+                     Cursor="Hand"                           
+                     Margin="0,30,0,0"
+                    IsEnabled="{Binding CanEditSettings}"
+                    Command="{Binding SaveCommand}"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
+

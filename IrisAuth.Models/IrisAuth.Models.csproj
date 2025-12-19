@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettingsModel.cs" />
     <Compile Include="AuditTrailModel.cs" />
     <Compile Include="GroupPermissionsModel.cs" />
     <Compile Include="IrisCaptureResult.cs" />

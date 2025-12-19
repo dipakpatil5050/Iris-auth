@@ -89,6 +89,7 @@ namespace IrisAuth.ViewModels
             {
                 DialogTitle = "Add Group";
                 LoginType = 1;
+                _originalGroupName = null;   // ✅ SAFE
             }
             else
             {
@@ -97,7 +98,7 @@ namespace IrisAuth.ViewModels
 
                 GroupId = group.GroupId;
                 GroupName = group.GroupName;
-
+                _originalGroupName = group.GroupName;  // ✅ SAFE
                 LoginType = group.LoginType ?? 1;
 
                 // Convert SECONDS → MINUTES
@@ -115,7 +116,7 @@ namespace IrisAuth.ViewModels
 
             SaveCommand = new ViewModelCommand(_ => Save());
             CancelCommand = new ViewModelCommand(_ => CloseAction?.Invoke());
-            _originalGroupName = group.GroupName;
+           // _originalGroupName = group.GroupName;
         }
 
         //private void Save()

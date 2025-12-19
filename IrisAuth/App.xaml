@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="/Styles/UIColors.xaml"/>
                 <ResourceDictionary Source="/Styles/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/DataGridStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/CommonButtons.xaml"/>
                 <ResourceDictionary Source="/Styles/BaseDialogStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/newTable.xaml"/>
             </ResourceDictionary.MergedDictionaries>

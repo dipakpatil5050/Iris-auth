@@ -1,4 +1,7 @@
-﻿using System;
+﻿using IrisAuth.Helpers;
+using IrisAuth.Models;
+using IrisAuth.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,9 +10,8 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
-using IrisAuth.Models;
-using IrisAuth.Repositories;
 
 namespace IrisAuth.ViewModels
 {
@@ -105,21 +107,49 @@ namespace IrisAuth.ViewModels
             return validData;
         }
 
+        //private void ExecuteLoginCommand(object obj)
+        //{
+        //    var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
+        //    if (isValidUser)
+        //    {
+        //        Thread.CurrentPrincipal = new GenericPrincipal(
+        //            new GenericIdentity(Username), null);
+        //        IsViewVisible = false;
+        //    }
+        //    else
+        //    {
+        //        ErrorMessage = "* Invalid username or password";
+        //    }
+        //}
         private void ExecuteLoginCommand(object obj)
         {
-            var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
-            if (isValidUser)
-            {
-                Thread.CurrentPrincipal = new GenericPrincipal(
-                    new GenericIdentity(Username), null);
-                IsViewVisible = false;
-            }
-            else
+            var isValidUser = userRepository.AuthenticateUser(
+                new NetworkCredential(Username, Password));
+
+            if (!isValidUser)
             {
                 ErrorMessage = "* Invalid username or password";
+                return;
             }
-        }
 
+            var user = userRepository.GetByUsername(Username);
+            AppSession.CurrentUser = user;
+
+            Thread.CurrentPrincipal = new GenericPrincipal(
+                new GenericIdentity(user.Username),
+                new[] { user.Roles });
+
+            // 🔥 NOTIFY MAIN VIEWMODEL
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                if (Application.Current.MainWindow?.DataContext is MainViewModel mainVm)
+                {
+                    mainVm.RefreshPermissions();
+                }
+            });
+
+            IsViewVisible = false;
+        }
         private void ExecuteRecoverPassCommand(string username, string email)
         {
             throw new NotImplementedException();

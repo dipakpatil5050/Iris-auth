@@ -80,14 +80,17 @@
     <Compile Include="CustomControls\BindablePasswordBox.xaml.cs">
       <DependentUpon>BindablePasswordBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppSession.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\PasswordHasher.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\WindowsSecurityConfig.cs" />
+    <Compile Include="Services\AppSettingsService.cs" />
     <Compile Include="Services\AuditService.cs" />
     <Compile Include="Services\WindowsGroupService.cs" />
     <Compile Include="Services\WindowsPrincipalContextFactory.cs" />
     <Compile Include="Services\WindowsUserService.cs" />
+    <Compile Include="ViewModels\AppSettingsViewModel.cs" />
     <Compile Include="ViewModels\BiometricEnrollViewModel.cs" />
     <Compile Include="ViewModels\GroupEditDialogViewModel.cs" />
     <Compile Include="ViewModels\GroupManagementViewModel.cs" />
@@ -101,6 +104,9 @@
     <Compile Include="ViewModels\UserManagementViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelCommand.cs" />
+    <Compile Include="Views\AppSettingsView.xaml.cs">
+      <DependentUpon>AppSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BiometricEnrollDialog.xaml.cs">
       <DependentUpon>BiometricEnrollDialog.xaml</DependentUpon>
     </Compile>
@@ -167,6 +173,10 @@
     <Page Include="Styles\UIColors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AppSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BiometricEnrollDialog.xaml">
       <SubType>Designer</SubType>

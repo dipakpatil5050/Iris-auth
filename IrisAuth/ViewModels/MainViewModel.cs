@@ -1,4 +1,8 @@
-﻿using System;
+﻿using FontAwesome.Sharp;
+using IrisAuth.Helpers;
+using IrisAuth.Models;
+using IrisAuth.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using FontAwesome.Sharp;
-using IrisAuth.Models;
-using IrisAuth.Repositories;
 
 namespace IrisAuth.ViewModels
 {
@@ -19,7 +20,18 @@ namespace IrisAuth.ViewModels
         private ViewModelBase _currentChildView;
         private string _caption;
         private IconChar _icon;
-
+        public bool ShowSettingsMenu
+        {
+            get
+            {
+                return AppSession.CurrentUser != null &&
+                       AppSession.CurrentUser.Roles == "SuperAdmin";
+            }
+        }
+        public void RefreshPermissions()
+        {
+            OnPropertyChanged(nameof(ShowSettingsMenu));
+        }
 
         private IUserRepository userRepository;
 
@@ -68,23 +80,29 @@ namespace IrisAuth.ViewModels
         public ICommand ShowUserManagementViewCommand { get; }
         public ICommand ShowUserLogsViewCommand { get; }
         public ICommand ShowUserGroupViewCommand { get; }
-
+        public ICommand ShowSettingsViewCommand { get; }
         public MainViewModel()
         {
             userRepository = new UserRepository();
             CurrentUserAccount = new UserModel();
+
+            AppSession.UserChanged += OnUserChanged;   // ✅ ADD
 
             //Initialize commands
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowUserManagementViewCommand = new ViewModelCommand(ExecuteShowUserManagementViewCommand);
             ShowUserLogsViewCommand = new ViewModelCommand(ExecuteShowUserLogsViewCommand);
             ShowUserGroupViewCommand = new ViewModelCommand(ExecuteShowUserGroupsViewCommand);
+            ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
             //Default view
             ExecuteShowHomeViewCommand(null);
 
             LoadCurrentUserData();
         }
-
+        private void OnUserChanged()
+        {
+            OnPropertyChanged(nameof(ShowSettingsMenu));
+        }
         private void ExecuteShowUserLogsViewCommand(object obj)
         {
             CurrentChildView = new UserLogsViewModel();
@@ -111,20 +129,22 @@ namespace IrisAuth.ViewModels
             Caption = "Dashboard";
             Icon = IconChar.Home;
         }
-
+        private void ExecuteShowSettingsViewCommand(object obj)
+        {
+            CurrentChildView = new AppSettingsViewModel();
+            Caption = "Application Settings";
+            Icon = IconChar.Cog;
+        }
         private void LoadCurrentUserData()
         {
             var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
+
             if (user != null)
             {
-                CurrentUserAccount.Username = user.Username;
-                //CurrentUserAccount.DisplayName = $"{user.Name} {user.LastName}";
-               // CurrentUserAccount.ProfilePicture = null;               
-            }
-            else
-            {
-               // CurrentUserAccount.DisplayName="Invalid user, not logged in";
-                //Hide child views.
+                CurrentUserAccount = user;
+
+                // 🔑 THIS LINE IS REQUIRED
+                OnPropertyChanged(nameof(ShowSettingsMenu));
             }
         }
     }
