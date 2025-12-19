@@ -73,8 +73,28 @@
                          Padding="10"
                          Margin="0,6,0,14"
                          />
-                
-                    <!-- Auto Logout / LoginType-->
+                <TextBlock Text="Login Type"
+                           FontWeight="SemiBold"
+                           Margin="0,12,0,6"/>
+
+                <ComboBox ItemsSource="{Binding LoginTypes}"
+                          SelectedValue="{Binding LoginType}"
+                          SelectedValuePath="Value"
+                          DisplayMemberPath="Text"
+                          Height="34"/>
+
+                <!-- LOGIN TIMEOUT -->
+                <StackPanel Margin="0,12,0,0"
+                            Visibility="{Binding IsLoginTimeoutVisible,
+                                         Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                    <TextBlock Text="Login Timeout (minutes)"
+                               FontWeight="SemiBold"/>
+
+                    <TextBox Text="{Binding LoginTimeoutMinutes}"
+                             Height="34"/>
+                </StackPanel>                
+                    <!-- Auto Logout / LoginType--><!--
                 <TextBlock Text="Auto Logout"
                       FontWeight="SemiBold"/>
 
@@ -87,7 +107,7 @@
                     <ComboBoxItem Content="InActive" Tag="3"/>
                 </ComboBox>
 
-                <!-- Login Timeout  -->
+                --><!-- Login Timeout  --><!--
 
                 <TextBlock Text="Time"
                     FontWeight="SemiBold"/>
@@ -96,7 +116,7 @@
                           Height="34"
                           Padding="10"
                           IsEnabled="{Binding IsLoginTimeoutEnabled}"
-                         />            
+                         />-->            
 
                 <TextBlock Text="{Binding ErrorMessage}"
                            Foreground="#DC2626"

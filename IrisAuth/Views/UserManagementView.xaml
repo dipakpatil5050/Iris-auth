@@ -206,8 +206,21 @@
                                     Binding="{Binding IsBlocked}"
                                     ElementStyle="{StaticResource CheckBoxStyle1}"
                                     Width="120"/>
-
-                        <DataGridTemplateColumn Header="Actions" Width="140">
+                <DataGridTemplateColumn Header="Left Iris" Width="110">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding IrisLeft, Converter={StaticResource ByteArrayToImage}}" Width="90" Height="60" Stretch="Uniform"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Right Iris" Width="110">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding IrisRight, Converter={StaticResource ByteArrayToImage}}" Width="90" Height="60" Stretch="Uniform"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Actions" Width="140">
                             <DataGridTemplateColumn.HeaderStyle>
                                 <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridColumnHeaderStyle1}">
                                     <Setter Property="HorizontalContentAlignment" Value="Center"/>

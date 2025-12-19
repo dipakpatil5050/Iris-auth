@@ -19,6 +19,11 @@ namespace IrisAuth.Models
 
         public bool IsBiometricEnabled { get; set; }
         public DateTime? LastLogin { get; set; }
+        // 🔑 BIOMETRIC DATA
+        public byte[] IrisLeft { get; set; }
+        public byte[] IrisRight { get; set; }
+        public int IrisLeftQuality { get; set; }
+        public int IrisRightQuality { get; set; }
 
         public bool Permission1 { get; set; }
         public bool Permission2 { get; set; }

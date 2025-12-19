@@ -14,6 +14,46 @@ namespace IrisAuth.IrisSdk.Services
         private MidiIrisNative.PREVIEW_CALLBACK _previewCb;
         private MidiIrisNative.CAPTURE_COMPLETE_CALLBACK _completeCb;
 
+
+        // ============================================================
+        // DEVICE STATUS CHECK  (🟢 / 🔴)
+        // ============================================================
+        public bool IsDeviceConnected()
+        {
+            try
+            {
+                // Dummy callbacks (not used)
+                _previewCb = (int e,
+                    ref MidiIrisNative.MIDIRIS_IMAGE_QUALITY q,
+                    ref MidiIrisNative.MIDIRIS_IMAGE_DATA d) => { };
+
+                _completeCb = (int e,
+                    ref MidiIrisNative.MIDIRIS_IMAGE_QUALITY q,
+                    ref MidiIrisNative.MIDIRIS_IMAGE_DATA d) => { };
+
+                // Very short timeout, low quality → probe only
+                int rc = MidiIrisNative.MIDIRIS_Auth_StartCapture(
+                    1,          // minQuality
+                    100,        // timeout ms
+                    _previewCb,
+                    _completeCb
+                );
+
+                // According to SDK behavior:
+                // rc == 0 → device OK
+                // rc != 0 → device missing / busy / error
+                return rc == 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // ============================================================
+        // REAL CAPTURE
+        // ============================================================
+
         public Task<IrisCaptureResult> CaptureAsync(int timeoutMs, int minQuality)
         {
             var tcs = new TaskCompletionSource<IrisCaptureResult>();
@@ -46,7 +86,8 @@ namespace IrisAuth.IrisSdk.Services
             _previewCb = (
                 int err,
                 ref MidiIrisNative.MIDIRIS_IMAGE_QUALITY q,
-                ref MidiIrisNative.MIDIRIS_IMAGE_DATA img) => { };
+                ref MidiIrisNative.MIDIRIS_IMAGE_DATA img) =>
+            { };
 
             int rc = MidiIrisNative.MIDIRIS_Auth_StartCapture(
                 minQuality,
@@ -64,7 +105,9 @@ namespace IrisAuth.IrisSdk.Services
 
             return tcs.Task;
         }
-
+        //// ============================================================
+        //// ERROR TEXT
+        //// ============================================================
         private string GetError(int code)
         {
             IntPtr ptr = MidiIrisNative.MIDIRIS_Auth_GetErrDescription(code);

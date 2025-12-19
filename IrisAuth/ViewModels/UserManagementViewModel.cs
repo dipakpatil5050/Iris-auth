@@ -1,31 +1,26 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows;
-using System.Windows.Data;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using System.ComponentModel;
 using IrisAuth.Models;
 using IrisAuth.Repositories;
 using IrisAuth.Helpers;
+using System.Windows;
 using IrisAuth.Views;
-
+using System.ComponentModel;
+using System.Windows.Data;
 namespace IrisAuth.ViewModels
 {
     public class UserManagementViewModel : ViewModelBase
     {
         private readonly UserAccountRepository _repo = new UserAccountRepository();
 
-        // MASTER LIST: Holds ALL data from database
-        private List<UserAccountModel> _allUsers = new List<UserAccountModel>();
-
-        // DISPLAY LIST: Holds ONLY the 10 rows for the current page
         public ObservableCollection<UserAccountModel> Users { get; }
-
-        // BUTTONS LIST: Dynamic "1 2 3..." buttons
-        public ObservableCollection<PaginationButton> PaginationButtons { get; }
-            = new ObservableCollection<PaginationButton>();
+        public ICollectionView UsersView { get; }
 
         private UserAccountModel _selectedUser;
         public UserAccountModel SelectedUser
@@ -35,6 +30,7 @@ namespace IrisAuth.ViewModels
             {
                 _selectedUser = value;
                 OnPropertyChanged(nameof(SelectedUser));
+                CommandManager.InvalidateRequerySuggested();
             }
         }
 
@@ -47,17 +43,13 @@ namespace IrisAuth.ViewModels
             {
                 _searchText = value;
                 OnPropertyChanged(nameof(SearchText));
-
-                // Reset to Page 1 when searching
-                CurrentPage = 1;
-                RefreshData();
+                UsersView.Refresh();
             }
         }
 
         /* ================= PAGINATION ================= */
-        private int _pageSize = 10;
+        private int _pageSize = 8;
         private int _currentPage = 1;
-        private int _totalPages = 1;
 
         public int CurrentPage
         {
@@ -66,19 +58,12 @@ namespace IrisAuth.ViewModels
             {
                 _currentPage = value;
                 OnPropertyChanged(nameof(CurrentPage));
-                RefreshData(); // Reload rows for the new page
+                UsersView.Refresh();
             }
         }
 
-        public int TotalPages
-        {
-            get => _totalPages;
-            set
-            {
-                _totalPages = value;
-                OnPropertyChanged(nameof(TotalPages));
-            }
-        }
+        public int TotalPages =>
+            (int)Math.Ceiling((double)Users.Count / _pageSize);
 
         /* ================= COMMANDS ================= */
         public ICommand AddUserCommand { get; }
@@ -87,125 +72,84 @@ namespace IrisAuth.ViewModels
         public ICommand EnrollBiometricCommand { get; }
         public ICommand NextPageCommand { get; }
         public ICommand PrevPageCommand { get; }
-        public ICommand GoToPageCommand { get; } // New: Click on "1", "2"
 
         public UserManagementViewModel()
         {
             Users = new ObservableCollection<UserAccountModel>();
 
-            // Setup Commands
+            UsersView = CollectionViewSource.GetDefaultView(Users);
+            UsersView.Filter = FilterUsers;
+
             AddUserCommand = new ViewModelCommand(_ => AddUser());
             EditCommand = new ViewModelCommand(u => EditUser(u as UserAccountModel));
             ToggleBlockCommand = new ViewModelCommand(u => ToggleBlock(u as UserAccountModel));
             EnrollBiometricCommand = new ViewModelCommand(u => EnrollBiometric(u as UserAccountModel));
 
-            NextPageCommand = new ViewModelCommand(_ => { if (CurrentPage < TotalPages) CurrentPage++; });
-            PrevPageCommand = new ViewModelCommand(_ => { if (CurrentPage > 1) CurrentPage--; });
-
-            // Handles clicking specific page numbers
-            GoToPageCommand = new ViewModelCommand(page =>
+            NextPageCommand = new ViewModelCommand(_ =>
             {
-                if (page is int p) CurrentPage = p;
+                if (CurrentPage < TotalPages)
+                    CurrentPage++;
+            });
+
+            PrevPageCommand = new ViewModelCommand(_ =>
+            {
+                if (CurrentPage > 1)
+                    CurrentPage--;
             });
 
             LoadUsers();
         }
 
-        /* ================= CORE LOGIC (SEARCH + PAGINATION) ================= */
-        private void RefreshData()
+        /* ================= FILTER ================= */
+        private bool FilterUsers(object obj)
         {
-            // 1. Filter the Master List based on Search Text
-            IEnumerable<UserAccountModel> query = _allUsers;
+            var user = obj as UserAccountModel;
+            if (user == null)
+                return false;
 
-            if (!string.IsNullOrWhiteSpace(SearchText))
-            {
-                string s = SearchText.ToLower();
-                query = query.Where(user =>
-                    (user.Username != null && user.Username.ToLower().Contains(s)) ||
-                    (user.GroupName != null && user.GroupName.ToLower().Contains(s)) ||
-                    user.UserId.ToString().Contains(s)
-                );
-            }
+            bool pageMatch = IsUserOnCurrentPage(user);
 
-            var filteredList = query.ToList();
+            if (string.IsNullOrWhiteSpace(SearchText))
+                return pageMatch;
 
-            // 2. Calculate Total Pages
-            TotalPages = (int)Math.Ceiling((double)filteredList.Count / _pageSize);
-            if (TotalPages == 0) TotalPages = 1;
+            string search = SearchText.ToLower();
 
-            if (CurrentPage > TotalPages) CurrentPage = TotalPages;
-            if (CurrentPage < 1) CurrentPage = 1;
+            return pageMatch &&
+                   (
+                       (user.Username != null &&
+                        user.Username.ToLower().Contains(search)) ||
 
-            // 3. Get ONLY the rows for the Current Page
-            var pageRows = filteredList
-                            .Skip((CurrentPage - 1) * _pageSize)
-                            .Take(_pageSize)
-                            .ToList();
+                       (user.GroupName != null &&
+                        user.GroupName.ToLower().Contains(search)) ||
 
-            // 4. Update the UI Collection
-            Users.Clear();
-            foreach (var item in pageRows) Users.Add(item);
-
-            // 5. Update the "1 2 3" Buttons
-            UpdatePaginationButtons();
+                       user.UserId.ToString().Contains(search)
+                   );
         }
 
-        private void UpdatePaginationButtons()
+
+        private bool IsUserOnCurrentPage(UserAccountModel user)
         {
-            PaginationButtons.Clear();
-
-            // Logic to determine which buttons to show (e.g. 1 ... 4 5 6 ... 10)
-            int start = Math.Max(1, CurrentPage - 2);
-            int end = Math.Min(TotalPages, CurrentPage + 2);
-
-            // First Page
-            if (start > 1)
-            {
-                PaginationButtons.Add(new PaginationButton { Content = "1", PageNumber = 1, Command = GoToPageCommand });
-                if (start > 2) PaginationButtons.Add(new PaginationButton { Content = "...", IsEllipsis = true });
-            }
-
-            // Middle Pages
-            for (int i = start; i <= end; i++)
-            {
-                PaginationButtons.Add(new PaginationButton
-                {
-                    Content = i.ToString(),
-                    PageNumber = i,
-                    IsSelected = (i == CurrentPage),
-                    Command = GoToPageCommand
-                });
-            }
-
-            // Last Page
-            if (end < TotalPages)
-            {
-                if (end < TotalPages - 1) PaginationButtons.Add(new PaginationButton { Content = "...", IsEllipsis = true });
-                PaginationButtons.Add(new PaginationButton { Content = TotalPages.ToString(), PageNumber = TotalPages, Command = GoToPageCommand });
-            }
+            int index = Users.IndexOf(user);
+            return index >= (_currentPage - 1) * _pageSize &&
+                   index < _currentPage * _pageSize;
         }
 
-        /* ================= DATA LOADING ================= */
+        /* ================= DATA ================= */
         private void LoadUsers()
         {
-            var dbUsers = _repo.GetUsers();
-            _allUsers.Clear();
-            _allUsers.AddRange(dbUsers);
+            Users.Clear();
+            foreach (var user in _repo.GetUsers())
+                Users.Add(user);
 
             CurrentPage = 1;
-            RefreshData();
+            UsersView.Refresh();
+            OnPropertyChanged(nameof(TotalPages));
         }
 
         /* ================= ACTIONS ================= */
-        private void AddUser()
-        {
-            OpenDialog(null);
-        }
+        private void AddUser() => OpenDialog(null);
 
-        private void EditUser(UserAccountModel user)
-        {
-            OpenDialog(user);
-        }
+        private void EditUser(UserAccountModel user) => OpenDialog(user);
 
         private void ToggleBlock(UserAccountModel user)
         {
@@ -216,7 +160,7 @@ namespace IrisAuth.ViewModels
             else
                 _repo.BlockUser(user.UserId);
 
-            LoadUsers(); // Reload from DB to reflect changes
+            LoadUsers();
         }
 
         private void EnrollBiometric(UserAccountModel user)
@@ -248,6 +192,3 @@ namespace IrisAuth.ViewModels
         }
     }
 }
-
-
-

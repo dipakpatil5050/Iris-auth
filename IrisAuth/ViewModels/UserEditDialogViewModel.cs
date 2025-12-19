@@ -15,12 +15,14 @@ namespace IrisAuth.ViewModels
     public class UserEditDialogViewModel : ViewModelBase
     {
         private readonly UserAccountRepository _userRepo = new UserAccountRepository();
-
+        private readonly WindowsUserService _windowsUserService
+            = new WindowsUserService();
+        private readonly AuditService _audit = new AuditService();
         public string DialogTitle { get; }
         public bool IsEditMode { get; }
 
         public int? UserId { get; }
-
+        private readonly int _originalGroupId;
         private string _username;
         public string Username
         {
@@ -43,7 +45,11 @@ namespace IrisAuth.ViewModels
                 OnPropertyChanged(nameof(GroupId));
             }
         }
-
+        private string GetGroupNameById(int groupId)
+        {
+            var group = Groups.FirstOrDefault(g => g.GroupId == groupId);
+            return group?.GroupName;
+        }
         private bool _isBiometricEnabled;
         public bool IsBiometricEnabled
         {
@@ -98,7 +104,7 @@ namespace IrisAuth.ViewModels
             SaveCommand = new ViewModelCommand(
                 _ => Save(),
                 _ => CanSave());
-
+            _originalGroupId = user?.GroupId ?? 0;
             CancelCommand = new ViewModelCommand(_ => CloseAction?.Invoke());
         }
 
@@ -113,6 +119,28 @@ namespace IrisAuth.ViewModels
             return true;
         }
 
+        //private void Save()
+        //{
+        //    ErrorMessage = null;
+
+        //    if (!CanSave())
+        //    {
+        //        ErrorMessage = "Please fill all required fields.";
+        //        return;
+        //    }
+
+        //    if (IsEditMode)
+        //    {
+        //        _userRepo.UpdateUser(UserId.Value, GroupId, IsBiometricEnabled);
+        //    }
+        //    else
+        //    {
+        //        var hash = PasswordHasher.Hash(Password);
+        //        _userRepo.CreateUser(Username, hash, GroupId);
+        //    }
+
+        //    CloseAction?.Invoke();
+        //}
         private void Save()
         {
             ErrorMessage = null;
@@ -123,17 +151,65 @@ namespace IrisAuth.ViewModels
                 return;
             }
 
-            if (IsEditMode)
+            try
             {
-                _userRepo.UpdateUser(UserId.Value, GroupId, IsBiometricEnabled);
-            }
-            else
-            {
-                var hash = PasswordHasher.Hash(Password);
-                _userRepo.CreateUser(Username, hash, GroupId);
-            }
+                if (IsEditMode)
+                {
+                    var oldGroup = GetGroupNameById(_originalGroupId);
+                    var newGroup = GetGroupNameById(GroupId);
 
-            CloseAction?.Invoke();
+                    if (oldGroup != newGroup)
+                    {
+                        _windowsUserService.SyncUserGroup(Username, oldGroup, newGroup);
+                        _audit.Log(
+                                "admin",
+                                "USER_GROUP_CHANGE",
+                                $"User {Username} group changed",
+                                oldGroup,
+                                newGroup,
+                                "Role change approved"
+                               );
+                    }
+                    // 🔹 Only DB update
+                    _userRepo.UpdateUser(UserId.Value, GroupId, IsBiometricEnabled);
+
+                }
+                else
+                {
+                    // 🔹 Create Windows User + add to Windows Group
+                    var groupName = GetGroupNameById(GroupId);
+
+                    if (string.IsNullOrWhiteSpace(groupName))
+                    {
+                        ErrorMessage = "Invalid group selected.";
+                        return;
+                    }
+
+                    _windowsUserService.CreateLocalUser(
+                        Username,
+                        groupName,
+                        Password
+                    );
+
+                    // 🔹 Create IrisAuth DB user
+                    var hash = PasswordHasher.Hash(Password);
+                    _userRepo.CreateUser(Username, hash, GroupId);
+                      _audit.Log(
+                        "admin", // later: CurrentUser
+                        "USER_CREATE",
+                        $"User {Username} created",
+                        null,
+                        Username,
+                        "New operator onboarding"
+                    );
+                }
+
+                CloseAction?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+            }
         }
     }
 }

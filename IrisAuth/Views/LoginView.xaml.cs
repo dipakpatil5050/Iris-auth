@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IrisAuth.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,6 +51,14 @@ namespace IrisAuth.Views
         private void txtUser_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void BindablePasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && DataContext is LoginViewModel vm)
+            {
+                vm.LoginCommand.Execute(null);
+            }
         }
     }
 }

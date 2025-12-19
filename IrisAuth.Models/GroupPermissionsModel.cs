@@ -21,5 +21,20 @@ namespace IrisAuth.Models
         public bool Permission6 { get; set; }
 
         public bool IsActive { get; set; }
+
+        // ================= DISPLAY HELPERS =================
+
+        public string LoginTypeText =>
+            LoginType == 1 ? "Off" :
+            LoginType == 2 ? "Absolute" :
+            LoginType == 3 ? "Inactive" :
+            "-";
+
+        // Convert seconds → minutes for UI
+        public string LoginTimeoutMinutes =>
+            (LoginType == 2 || LoginType == 3) && LoginTimeout.HasValue
+                ? (LoginTimeout.Value / 60).ToString()
+                : "-";
     }
+
 }

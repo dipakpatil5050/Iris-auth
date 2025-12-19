@@ -1,4 +1,4 @@
-﻿<Window x:Class="IrisAuth.Views.BiometricEnrollDialog"
+﻿<!--<Window x:Class="IrisAuth.Views.BiometricEnrollDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Style="{StaticResource BaseDialogWindowStyle}"
@@ -7,7 +7,7 @@
         Height="580"
         Background="Transparent">
 
-    <!-- ROOT CARD (SAFE FOR ANIMATION) -->
+    --><!-- ROOT CARD (SAFE FOR ANIMATION) --><!--
     <Border x:Name="RootDialog"
             Style="{StaticResource DialogCardStyle}"
             Opacity="0"
@@ -17,7 +17,7 @@
             <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
         </Border.RenderTransform>
 
-        <!-- OPEN ANIMATION -->
+        --><!-- OPEN ANIMATION --><!--
         <Border.Triggers>
             <EventTrigger RoutedEvent="Loaded">
                 <BeginStoryboard>
@@ -41,7 +41,7 @@
             </EventTrigger>
         </Border.Triggers>
 
-        <!-- ================= CONTENT ================= -->
+        --><!-- ================= CONTENT ================= --><!--
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -49,7 +49,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- HEADER -->
+            --><!-- HEADER --><!--
             <StackPanel>
                 <TextBlock Text="Biometric Enrollment"
                            FontSize="20"
@@ -60,17 +60,17 @@
                            Foreground="#6B7280"/>
             </StackPanel>
 
-            <!-- BODY -->
+            --><!-- BODY --><!--
             <StackPanel Grid.Row="1"
                         Margin="0,18,0,0">
 
-                <!-- ERROR -->
+                --><!-- ERROR --><!--
                 <TextBlock Text="{Binding ErrorMessage}"
                            Foreground="#DC2626"
                            TextWrapping="Wrap"
                            Margin="0,0,0,10"/>
 
-                <!-- LEFT EYE -->
+                --><!-- LEFT EYE --><!--
                 <TextBlock Text="Left Eye"
                            FontWeight="SemiBold"/>
 
@@ -92,7 +92,7 @@
                            FontSize="12"
                            Margin="0,4,0,14"/>
 
-                <!-- RIGHT EYE -->
+                --><!-- RIGHT EYE --><!--
                 <TextBlock Text="Right Eye"
                            FontWeight="SemiBold"/>
 
@@ -115,7 +115,7 @@
                            Margin="0,4,0,0"/>
             </StackPanel>
 
-            <!-- FOOTER -->
+            --><!-- FOOTER --><!--
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         HorizontalAlignment="Right"
@@ -131,6 +131,184 @@
                         IsEnabled="{Binding CanSave}"
                         Command="{Binding SaveCommand}"/>
             </StackPanel>
+
+        </Grid>
+    </Border>
+</Window>-->
+<Window x:Class="IrisAuth.Views.BiometricEnrollDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Style="{StaticResource BaseDialogWindowStyle}"
+        WindowStartupLocation="CenterOwner"
+        Width="460"
+        Height="620"
+        Background="Transparent">
+
+    <!-- ================= ROOT ================= -->
+    <Border x:Name="RootDialog"
+            Style="{StaticResource DialogCardStyle}"
+            Opacity="0"
+            RenderTransformOrigin="0.5,0.5">
+
+        <Border.RenderTransform>
+            <ScaleTransform ScaleX="0.95" ScaleY="0.95"/>
+        </Border.RenderTransform>
+
+        <!-- OPEN ANIMATION -->
+        <Border.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                         To="1"
+                                         Duration="0:0:0.25"/>
+                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                         To="1"
+                                         Duration="0:0:0.25"/>
+                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                         To="1"
+                                         Duration="0:0:0.25"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Border.Triggers>
+
+        <!-- ================= CONTENT ================= -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ================= HEADER ================= -->
+            <Border Grid.Row="0"
+                    Padding="18"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="0,0,0,1">
+
+                <StackPanel>
+                    <TextBlock Text="Biometric Enrollment"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                        <TextBlock Text="Device Status:"
+                                   FontSize="12"
+                                   Foreground="#6B7280"/>
+
+                        <TextBlock Text="{Binding DeviceStatusText}"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Margin="6,0,0,0"
+                                   Foreground="{Binding DeviceConnected,
+                                       Converter={StaticResource BoolToStatusColorConverter}}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ================= BODY ================= -->
+            <ScrollViewer Grid.Row="1"
+                          VerticalScrollBarVisibility="Auto">
+
+                <Border Padding="18">
+                    <StackPanel>
+
+                        <!-- CAPTURE SOURCE -->
+                        <TextBlock Text="Capture Source"
+                                   FontWeight="SemiBold"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,6,0,16">
+
+                            <RadioButton Content="Iris Device"
+                                         IsChecked="{Binding UseIrisDevice}"
+                                         IsEnabled="{Binding DeviceConnected}"
+                                         ToolTip="Capture live image from iris device"/>
+
+                            <RadioButton Content="Local Computer"
+                                         Margin="20,0,0,0"
+                                         IsChecked="{Binding UseLocalFile}"
+                                         IsEnabled="{Binding AllowLocalUpload}"
+                                         ToolTip="Upload image from local PC (testing / fallback)"/>
+                        </StackPanel>
+
+                        <!-- ERROR -->
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Foreground="#DC2626"
+                                   FontSize="12"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,12"/>
+
+                        <!-- LEFT EYE -->
+                        <TextBlock Text="👁 Left Eye"
+                                   FontWeight="SemiBold"/>
+
+                        <Button Content="📷 Capture Left Eye"
+                                Command="{Binding CaptureLeftCommand}"
+                                Margin="0,6,0,6"/>
+
+                        <Border Height="110"
+                                Background="#F3F4F6"
+                                CornerRadius="8"
+                                BorderBrush="#D1D5DB"
+                                BorderThickness="1">
+
+                            <Image Source="{Binding LeftPreview}"
+                                   Stretch="Uniform"/>
+                        </Border>
+
+                        <TextBlock Text="{Binding LeftQualityText}"
+                                   FontSize="12"
+                                   Margin="0,6,0,14"/>
+
+                        <!-- RIGHT EYE -->
+                        <TextBlock Text="👁 Right Eye"
+                                   FontWeight="SemiBold"/>
+
+                        <Button Content="📷 Capture Right Eye"
+                                Command="{Binding CaptureRightCommand}"
+                                Margin="0,6,0,6"/>
+
+                        <Border Height="110"
+                                Background="#F3F4F6"
+                                CornerRadius="8"
+                                BorderBrush="#D1D5DB"
+                                BorderThickness="1">
+
+                            <Image Source="{Binding RightPreview}"
+                                   Stretch="Uniform"/>
+                        </Border>
+
+                        <TextBlock Text="{Binding RightQualityText}"
+                                   FontSize="12"
+                                   Margin="0,6,0,0"/>
+
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+
+            <!-- ================= FOOTER ================= -->
+            <Border Grid.Row="2"
+                    Padding="14"
+                    BorderBrush="#E5E7EB"
+                    BorderThickness="0,1,0,0">
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+
+                    <Button Content="Cancel"
+                            Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,10,0"
+                            Command="{Binding CancelCommand}"/>
+
+                    <Button Content="Save"
+                            Style="{StaticResource PrimaryButton}"
+                            IsEnabled="{Binding CanSave}"
+                            IsDefault="True"
+                            Command="{Binding SaveCommand}"/>
+                </StackPanel>
+            </Border>
 
         </Grid>
     </Border>
