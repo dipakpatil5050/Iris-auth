@@ -4,7 +4,9 @@
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:IrisAuth"
              xmlns:conv="clr-namespace:IrisAuth.Converters"
-             Startup="ApplicationStart">
+             Startup="ApplicationStart"
+             ShutdownMode="OnExplicitShutdown"
+             >
     <!--<Application.Resources>
         <ResourceDictionary Source="/styles/UIColors.xaml"/>
         --><!--<ResourceDictionary Source="/styles/ButtonStyles.xaml"/>--><!--

@@ -1,4 +1,5 @@
 ﻿<Window x:Class="IrisAuth.Views.LoginView"
+        x:Name="LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -18,13 +19,13 @@
         <viewModel:LoginViewModel/>
     </Window.DataContext>
 
-    <Window.Resources>
+    <!--<Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>
 
     <Window.Visibility>
         <Binding Path="IsViewVisible" Mode="TwoWay" Converter="{StaticResource BooleanToVisibility}"/>
-    </Window.Visibility>
+    </Window.Visibility>-->
 
     <Border CornerRadius="12">
         <Border.Background>
@@ -222,7 +223,9 @@
                             FontSize="12"
                             FontFamily="Montserrat"
                             Cursor="Hand"                           
-                            Margin="0,30,0,0" Click="btnLogin_Click_1">
+                            Margin="0,30,0,0" Click="btnLogin_Click_1"
+                            CommandParameter="{Binding ElementName=LoginWindow}"
+                            >
 
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">

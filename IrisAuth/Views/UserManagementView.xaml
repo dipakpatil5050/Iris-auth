@@ -157,6 +157,8 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
+        
+        <!--Pagination-->
 
         <Border Grid.Row="3" 
         HorizontalAlignment="Right" 

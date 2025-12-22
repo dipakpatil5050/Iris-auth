@@ -2,6 +2,7 @@
 using IrisAuth.Helpers;
 using IrisAuth.Models;
 using IrisAuth.Repositories;
+using IrisAuth.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace IrisAuth.ViewModels
 {
@@ -81,10 +83,13 @@ namespace IrisAuth.ViewModels
         public ICommand ShowUserLogsViewCommand { get; }
         public ICommand ShowUserGroupViewCommand { get; }
         public ICommand ShowSettingsViewCommand { get; }
+        public ICommand LogoutCommand { get; }
+
         public MainViewModel()
         {
             userRepository = new UserRepository();
             CurrentUserAccount = new UserModel();
+            LogoutCommand = new RelayCommand(ExecuteLogout);
 
             AppSession.UserChanged += OnUserChanged;   // ✅ ADD
 
@@ -146,6 +151,33 @@ namespace IrisAuth.ViewModels
                 // 🔑 THIS LINE IS REQUIRED
                 OnPropertyChanged(nameof(ShowSettingsMenu));
             }
+        }
+
+        private void ExecuteLogout(object obj)
+        {
+            // 1️⃣ Clear session
+            AppSession.CurrentUser = null;
+            Thread.CurrentPrincipal = null;
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                // 2️⃣ Open LoginView
+                var loginView = new LoginView();
+                loginView.Show();
+
+                // 3️⃣ Set LoginView as MainWindow
+                Application.Current.MainWindow = loginView;
+
+                // 4️⃣ Close MainView
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is MainView)
+                    {
+                        window.Close();
+                        break;
+                    }
+                }
+            });
         }
     }
 }

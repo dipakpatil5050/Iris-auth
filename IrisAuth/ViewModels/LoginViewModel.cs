@@ -1,6 +1,7 @@
 ﻿using IrisAuth.Helpers;
 using IrisAuth.Models;
 using IrisAuth.Repositories;
+using IrisAuth.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,6 +122,72 @@ namespace IrisAuth.ViewModels
         //        ErrorMessage = "* Invalid username or password";
         //    }
         //}
+        //private void ExecuteLoginCommand(object obj)
+        //{
+        //    var isValidUser = userRepository.AuthenticateUser(
+        //        new NetworkCredential(Username, Password));
+
+        //    if (!isValidUser)
+        //    {
+        //        ErrorMessage = "* Invalid username or password";
+        //        return;
+        //    }
+
+        //    var user = userRepository.GetByUsername(Username);
+        //    AppSession.CurrentUser = user;
+
+        //    Thread.CurrentPrincipal = new GenericPrincipal(
+        //        new GenericIdentity(user.Username),
+        //        new[] { user.Roles });
+
+        //    // 🔥 NOTIFY MAIN VIEWMODEL
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        if (Application.Current.MainWindow?.DataContext is MainViewModel mainVm)
+        //        {
+        //            mainVm.RefreshPermissions();
+        //        }
+        //    });
+
+        //    IsViewVisible = false;
+        //}
+
+
+        //private void ExecuteLoginCommand(object obj)
+        //{
+        //    var isValidUser = userRepository.AuthenticateUser(
+        //        new NetworkCredential(Username, Password));
+
+        //    if (!isValidUser)
+        //    {
+        //        ErrorMessage = "* Invalid username or password";
+        //        return;
+        //    }
+
+        //    var user = userRepository.GetByUsername(Username);
+        //    AppSession.CurrentUser = user;
+        //    if (obj is Window loginWindow)
+        //    {
+        //        loginWindow.Close();
+        //    }
+        //    Thread.CurrentPrincipal = new GenericPrincipal(
+        //        new GenericIdentity(user.Username),
+        //        new[] { user.Roles });
+
+        //    Application.Current.Dispatcher.Invoke(() =>
+        //    {
+        //        // Open Main Window
+        //        var mainView = new MainView();
+        //        Application.Current.MainWindow = mainView;
+        //        mainView.Show();
+
+        //        // Close Login Window
+        //        //if (obj is Window loginWindow)
+        //        //{
+        //        //    loginWindow.Close();
+        //        //}
+        //    });
+        //}
         private void ExecuteLoginCommand(object obj)
         {
             var isValidUser = userRepository.AuthenticateUser(
@@ -139,17 +206,28 @@ namespace IrisAuth.ViewModels
                 new GenericIdentity(user.Username),
                 new[] { user.Roles });
 
-            // 🔥 NOTIFY MAIN VIEWMODEL
             Application.Current.Dispatcher.Invoke(() =>
             {
-                if (Application.Current.MainWindow?.DataContext is MainViewModel mainVm)
+                // 1️⃣ Create & show MainView FIRST
+                var mainView = new MainView();
+                mainView.Show();
+
+                // 2️⃣ Set it as MainWindow
+                Application.Current.MainWindow = mainView;
+
+                // 3️⃣ Now close LoginView safely
+                foreach (Window window in Application.Current.Windows)
                 {
-                    mainVm.RefreshPermissions();
+                    if (window is LoginView)
+                    {
+                        window.Close();
+                        break;
+                    }
                 }
             });
-
-            IsViewVisible = false;
         }
+
+
         private void ExecuteRecoverPassCommand(string username, string email)
         {
             throw new NotImplementedException();
