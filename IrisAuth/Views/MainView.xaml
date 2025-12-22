@@ -37,6 +37,9 @@
         <DataTemplate DataType="{x:Type vm:AppSettingsViewModel}">
             <views:AppSettingsView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MatchingViewModel}">
+            <views:MatchingView/>
+        </DataTemplate>
     </Window.Resources>
 
     <!-- ================= ROOT CARD ================= -->
@@ -80,20 +83,20 @@
                                 Margin="0 -30 0 10">
                             <Ellipse>
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="https://randomuser.me/api/portraits/men/75.jpg"/>
+                                    <ImageBrush ImageSource="/Images/User_profile_Img.png"/>
                                 </Ellipse.Fill>
                             </Ellipse>
                         </Border>
 
                         <!-- Title -->
-                        <TextBlock Text="Velox"
+                        <TextBlock Text="{Binding DisplayName}"
                                    Foreground="White"
                                    FontSize="20"
                                    FontWeight="SemiBold"
                                    TextAlignment="Center"
                                    DockPanel.Dock="Top"/>
 
-                        <TextBlock Text="Admin, Surat"
+                        <TextBlock Text="{Binding DisplayRoleFormatted}"
                                    Foreground="#D0BFFF"
                                    FontSize="13"
                                    TextAlignment="Center"
@@ -147,13 +150,22 @@
                                             Visibility="{Binding ShowSettingsMenu,
                                                         Converter={StaticResource BooleanToVisibilityConverter}}"
                                                         Command="{Binding ShowSettingsViewCommand}">
-                                         <StackPanel Orientation="Horizontal">
-                                            <Icon:PackIconMaterial Kind="CogOutline"
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="CogOutline"
                                              Style="{StaticResource menuButtonIcon}"/>
-                                            <TextBlock Text="Application Settings"/>
-                                         </StackPanel>
+                                    <TextBlock Text="Application Settings"/>
+                                </StackPanel>
                             </Button>
-
+                            <Button Style="{StaticResource menuButton}"
+                                    Visibility="{Binding ShowSettingsMenu,
+                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Command="{Binding ShowMatchingViewCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="FileDocumentOutline"
+                                                           Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="Matching"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
 
                         <!-- Logout -->

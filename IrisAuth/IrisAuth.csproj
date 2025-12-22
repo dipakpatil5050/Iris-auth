@@ -98,6 +98,7 @@
     <Compile Include="ViewModels\LoginTypeItem.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MatchingViewModel.cs" />
     <Compile Include="ViewModels\PaginationButton.cs" />
     <Compile Include="ViewModels\UserEditDialogViewModel.cs" />
     <Compile Include="ViewModels\UserLogsViewModel.cs" />
@@ -128,6 +129,9 @@
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MatchingView.xaml.cs">
+      <DependentUpon>MatchingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserEditDialog.xaml.cs">
       <DependentUpon>UserEditDialog.xaml</DependentUpon>
@@ -199,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MatchingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -279,6 +287,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\User_profile_Image.png" />
+    <Resource Include="Images\User_profile_Img.png" />
     <Content Include="Libs\iris_engine_v3.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

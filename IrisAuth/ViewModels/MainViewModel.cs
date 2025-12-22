@@ -51,7 +51,15 @@ namespace IrisAuth.ViewModels
                 OnPropertyChanged(nameof(CurrentUserAccount));
             }
         }
+        public string DisplayName
+        {
+            get => CurrentUserAccount?.Username ?? "";
+        }
 
+        public string DisplayRole
+        {
+            get => CurrentUserAccount?.Roles ?? "";
+        }
         public ViewModelBase CurrentChildView { 
             get => _currentChildView;
             set
@@ -83,6 +91,8 @@ namespace IrisAuth.ViewModels
         public ICommand ShowUserLogsViewCommand { get; }
         public ICommand ShowUserGroupViewCommand { get; }
         public ICommand ShowSettingsViewCommand { get; }
+
+        public ICommand ShowMatchingViewCommand { get; }
         public ICommand LogoutCommand { get; }
 
         public MainViewModel()
@@ -99,13 +109,38 @@ namespace IrisAuth.ViewModels
             ShowUserLogsViewCommand = new ViewModelCommand(ExecuteShowUserLogsViewCommand);
             ShowUserGroupViewCommand = new ViewModelCommand(ExecuteShowUserGroupsViewCommand);
             ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
+            ShowMatchingViewCommand = new ViewModelCommand(ExecuteShowMatchingViewCommand);
+
             //Default view
             ExecuteShowHomeViewCommand(null);
 
             LoadCurrentUserData();
         }
+        public string DisplayRoleFormatted
+        {
+            get
+            {
+                if (CurrentUserAccount == null || string.IsNullOrEmpty(CurrentUserAccount.Roles))
+                    return string.Empty;
+
+                switch (CurrentUserAccount.Roles)
+                {
+                    case "SuperAdmin":
+                        return "Super Admin";
+
+                    case "Admin":
+                        return "Administrator";
+
+                    default:
+                        return CurrentUserAccount.Roles;
+                }
+            }
+        }
+
+
         private void OnUserChanged()
         {
+            LoadCurrentUserData();
             OnPropertyChanged(nameof(ShowSettingsMenu));
         }
         private void ExecuteShowUserLogsViewCommand(object obj)
@@ -140,15 +175,37 @@ namespace IrisAuth.ViewModels
             Caption = "Application Settings";
             Icon = IconChar.Cog;
         }
+
+        private void ExecuteShowMatchingViewCommand(object obj)
+        {
+            CurrentChildView = new MatchingViewModel();
+            Caption = "Matching";
+            Icon = IconChar.SearchPlus;
+        }
         private void LoadCurrentUserData()
         {
-            var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
+            //var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
+
+            //if (user != null)
+            //{
+            //    CurrentUserAccount = user;
+
+            //    // 🔑 THIS LINE IS REQUIRED
+            //    OnPropertyChanged(nameof(ShowSettingsMenu));
+            //}
+            if (Thread.CurrentPrincipal?.Identity?.IsAuthenticated != true)
+                return;
+
+            var user = userRepository.GetByUsername(
+                Thread.CurrentPrincipal.Identity.Name
+            );
 
             if (user != null)
             {
                 CurrentUserAccount = user;
 
-                // 🔑 THIS LINE IS REQUIRED
+                OnPropertyChanged(nameof(DisplayName));
+                OnPropertyChanged(nameof(DisplayRole));
                 OnPropertyChanged(nameof(ShowSettingsMenu));
             }
         }
